@@ -23,6 +23,7 @@ map("n", "<C-d>", "<C-d>zz", {desc = "Down half page"})
 map("n", "<C-u>", "<C-u>zz", {desc = "Up half page"})
 
 map("n", "<leader>fs", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", {desc = "Search for symbols in current workspace"})
+map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<CR>", {desc = "Search for symbols in current document"})
 
 
 map("n", "<leader>co", "<cmd>ChatGPT<CR>", {desc = "Open ChatGPT"})
