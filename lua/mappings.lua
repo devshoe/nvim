@@ -7,6 +7,7 @@ local map = vim.keymap.set
 vim.api.nvim_del_keymap('n','<Tab>')
 vim.api.nvim_del_keymap('n', '<S-Tab>')
 
+map('n', '<leader>fx', '<cmd>SearchSession<CR>')
 
 map("n", "<leader><tab>", function()
   require("nvchad.tabufline").next()
