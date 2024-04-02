@@ -1,20 +1,10 @@
 return {
-  {
-    'github/copilot.vim',
-    lazy = false,
-    config = function()
-      vim.cmd("Copilot disable")
-    end
-  },
+
   {
     'tpope/vim-surround',
     lazy = false,
   },
-  
-  {
-    'tpope/vim-dadbod',
-    lazy = false, 
-  },
+
   {
     'kristijanhusak/vim-dadbod-ui',
     dependencies = {
@@ -32,17 +22,10 @@ return {
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
+
   {
     'nvim-tree/nvim-web-devicons',
     lazy = false,
-  },
-
-  {
-    "stevearc/conform.nvim",
-    event = 'BufWritePre', -- uncomment for format on save
-    config = function()
-      require "configs.conform"
-    end,
   },
 
   {
@@ -69,23 +52,11 @@ return {
   	opts = {
   		ensure_installed = {
   			"vim", "lua", "vimdoc",
-       "html", "css"
+       "html", "css", "javascript",
+        "go", "rust", "python"
   		},
   	},
   },
 
-  {
-  "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    config = function()
-      local opts = require('configs.chatgpt')
-      require("chatgpt").setup(opts)
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "folke/trouble.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
+  
 }

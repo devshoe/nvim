@@ -163,7 +163,7 @@
      n = 1,
    },
    use_openai_functions_for_edits = false,
-   actions_paths = {},
+   actions_paths = {'~/.config/nvim/lua/configs/gpt_actions.json'},
    show_quickfixes_cmd = "Trouble quickfix",
    predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv",
    highlights = {

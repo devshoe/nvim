@@ -26,8 +26,8 @@ map("n", "<leader>fs", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", {desc
 map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<CR>", {desc = "Search for symbols in current document"})
 
 
-map("n", "<leader>co", "<cmd>ChatGPT<CR>", {desc = "Open ChatGPT"})
-map("n", "<leader>cx", function ()
+map("n", "<leader>ac", "<cmd>ChatGPT<CR>", {desc = "Open ChatGPT"})
+map("n", "<leader>ax", function ()
    local status = vim.fn.execute('Copilot status')
    if string.find(status, "Ready") then
         -- If Copilot is ready, disable it
@@ -39,4 +39,21 @@ map("n", "<leader>cx", function ()
         print('Copilot enabled')
     end
 end, {desc = "Toggle Github Copilot"})
+
+map("n", "<leader>dbo", "<cmd>DBUI<CR>", {desc = "Open DB UI"})
+map("n", "<leader>dba", "<cmd>DBUIAddConnection<CR>", {desc = "Add DB Connection"})
+map("n", "<leader>dbf", "<cmd>DBUIFindBuffer<CR>", {desc = "Find DB Open Buffers"})
+map("n", "<leader>dbx", "<cmd>DBUIClose<CR>", {desc = "Close DB Buffers"})
+
+-- Disable arrow keys in normal mode
+vim.api.nvim_set_keymap('n', '<Up>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<Down>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<Left>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<Right>', '<Nop>', {noremap = true})
+
+-- Disable arrow keys in visual mode
+vim.api.nvim_set_keymap('v', '<Up>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('v', '<Down>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('v', '<Left>', '<Nop>', {noremap = true})
+vim.api.nvim_set_keymap('v', '<Right>', '<Nop>', {noremap = true})
 
