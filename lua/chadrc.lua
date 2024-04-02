@@ -5,7 +5,7 @@
 local M = {}
 
 M.ui = {
-	theme = "ayu_dark",
+	theme = "oceanic-light",
 
 	hl_override = {
 		Comment = { bold = true },
