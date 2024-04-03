@@ -58,28 +58,32 @@ map({'n','v'}, '<Left>', '<Nop>', {noremap = true})
 map({'n','v'}, '<Right>', '<Nop>', {noremap = true})
 
 --nvchad term bindings
-map({ "n", "t" }, "<A-v>", function()
+map({ "n", "t" }, "<leader>tv", function()
   require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm", size = 0.3 }
 end, { desc = "Terminal Toggleable vertical term" })
 
-map({ "n", "t" }, "<C-`>", function()
+map({ "n", "t" }, "<leader>tt", function()
   require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
 end, { desc = "Terminal New horizontal term" })
 
-map({ "n", "t" }, "<A-i>", function()
+map({ "n", "t" }, "<leader>tf", function()
   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
 end, { desc = "Terminal Toggle Floating term" })
 
-map("t", "<ESC>", function()
-  local win = vim.api.nvim_get_current_win()
-  vim.api.nvim_win_close(win, true)
-end, { desc = "Terminal Close term in terminal mode" })
-
---Toggle Term bindings
 map('t', '<esc>', [[<C-\><C-n>]])
-map('t', 'jk', [[<C-\><C-n>]])
-map('t', '<C-h>', [[<Cmd>wincmd h<CR>]])
-map('t', '<C-j>', [[<Cmd>wincmd j<CR>]])
-map('t', '<C-k>', [[<Cmd>wincmd k<CR>]])
-map('t', '<C-l>', [[<Cmd>wincmd l<CR>]])
-map('t', '<C-w>', [[<C-\><C-n><C-w>]])
+
+--DBUI
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sql",
+  callback = function()
+    local function map(mode, lhs, rhs, opts)
+      local bufnr = vim.api.nvim_get_current_buf()
+      vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    end
+
+    map('n', '<leader>dbr', '<Plug>(DBUI_ExecuteQuery)', {desc = 'Execute current file'})
+    map('v', '<leader>dbr', '<Plug>(DBUI_ExecuteQuery)', {desc = 'Execute current selection'})
+    map('n', '<leader>dbs', '<Plug>(DBUI_SaveQuery)', {desc = 'Save Current Query'})
+
+    end,
+})

@@ -1,17 +1,10 @@
 return {
-  {
-    "akinsho/toggleterm.nvim", version = '*',
-    cmd = {'ToggleTerm'},
-    config = function()
-      require("toggleterm").setup()
-    end
-  },
 
   {
     'fatih/vim-go',
     lazy = false,
   },
-  
+
   {
     'rmagatti/auto-session',
     cmd = {'SessionSave'},
@@ -42,15 +35,10 @@ return {
 
   {
     'kristijanhusak/vim-dadbod-ui',
+    lazy = false,
     dependencies = {
       { 'tpope/vim-dadbod', lazy = true },
       { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
-    },
-    cmd = {
-      'DBUI',
-      'DBUIToggle',
-      'DBUIAddConnection',
-      'DBUIFindBuffer',
     },
     init = function()
       -- Your DBUI configuration
