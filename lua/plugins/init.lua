@@ -1,7 +1,20 @@
 return {
   {
-    'rmagatti/auto-session',
+    "akinsho/toggleterm.nvim", version = '*',
+    cmd = {'ToggleTerm'},
+    config = function()
+      require("toggleterm").setup()
+    end
+  },
+
+  {
+    'fatih/vim-go',
     lazy = false,
+  },
+  
+  {
+    'rmagatti/auto-session',
+    cmd = {'SessionSave'},
     config = function()
       local opts = require('configs.autosession')
       require("auto-session").setup(opts)
@@ -11,7 +24,7 @@ return {
   {
     'rmagatti/session-lens',
     requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
-    lazy = false,
+    cmd = {'SearchSession'},
     config = function()
       require('session-lens').setup({
         path_display = {'shorten'},
