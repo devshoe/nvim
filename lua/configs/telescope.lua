@@ -1,4 +1,8 @@
-local options = {
+local M = {}
+
+local fb_actions = require "telescope".extensions.file_browser.actions
+
+M.telescope = {
   defaults = {
     vimgrep_arguments = {
       "rg",
@@ -13,7 +17,7 @@ local options = {
     prompt_prefix = "   ",
     selection_caret = "  ",
     entry_prefix = "  ",
-    initial_mode = "insert",
+    initial_mode = "normal",
     selection_strategy = "reset",
     sorting_strategy = "ascending",
     layout_strategy = "horizontal",
@@ -50,6 +54,7 @@ local options = {
   },
 
   extensions_list = { "themes", "terms" },
+
   extensions = {
     fzf = {
       fuzzy = true,
@@ -57,7 +62,32 @@ local options = {
       override_file_sorter = true,
       case_mode = "smart_case",
     },
+
+    file_browser = {
+      theme = "ivy",
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+          ["a"] = fb_actions.create,
+          ["d"] = fb_actions.remove,
+          ["c"] = fb_actions.copy,
+          ["x"] = fb_actions.move,
+          ["]"] = fb_actions.change_cwd,
+          ["["] = function(bufnr)
+                    vim.cmd("normal! H")
+                    fb_actions.change_cwd(bufnr)
+                    vim.cmd("normal! <CR>")
+                  end,
+          ["~"] = fb_actions.goto_home_dir,
+        },
+      },
+    },
   },
 }
 
-return options
+
+return M

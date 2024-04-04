@@ -1,5 +1,4 @@
 return {
-
   {
     'fatih/vim-go',
     lazy = false,
@@ -8,7 +7,7 @@ return {
   {
     'rmagatti/auto-session',
     cmd = {'SessionSave'},
-    config = function()
+    config = function(opts)
       local opts = require('configs.autosession')
       require("auto-session").setup(opts)
     end

@@ -24,8 +24,8 @@ map("n", "<C-u>", "<C-u>zz", {desc = "Up half page"})
 --Telescope add ons
 map("n", "<leader>fs", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", {desc = "Search for symbols in current workspace"})
 map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<CR>", {desc = "Search for symbols in current document"})
-map("v", "<leader>fw", '"zy:Telescope grep_string default_text=<C-r>z<cr>')
-
+map("v", "<leader>fw", '"zy:Telescope grep_string default_text=<C-r>z<cr>', {desc = "Search for selection"})
+map("n", "<leader>fe", '<cmd>Telescope file_browser<CR>', {desc = "Telescope File Explorer"})
 -- Sessions
 map('n', '<leader>sf', '<cmd>SearchSession<CR>',{desc = "Session Find"})
 map('n', '<leader>ss', '<cmd>SessionSave<CR>', {desc = "Session Save"})
