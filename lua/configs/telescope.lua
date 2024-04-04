@@ -64,6 +64,13 @@ M.telescope = {
     },
 
     file_browser = {
+      grouped = true,
+      initial_browser = "tree",
+      -- searching activates a `telescope.find_files` like finder
+      -- you can use this to enter directories and remove ( move, copy) files to
+      -- selected dir (or selected dir of file) etc.
+      auto_depth = true,
+      depth = 1,
       theme = "ivy",
       hijack_netrw = true,
       mappings = {

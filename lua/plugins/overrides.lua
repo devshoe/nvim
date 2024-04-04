@@ -1,6 +1,7 @@
 return {
   {
     "nvim-telescope/telescope-file-browser.nvim",
+    branch = "feat/tree",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   },
 
