@@ -1,6 +1,7 @@
 return {
 {
-  "jackMort/ChatGPT.nvim",
+  "ilan-schemoul/ChatGPT.nvim",
+    branch = "fix-invalid-capture",
     event = "VeryLazy",
     config = function()
       local opts = require('configs.chatgpt')

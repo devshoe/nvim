@@ -49,7 +49,7 @@
        select_session = "<CR>",
        rename_session = "r",
        delete_session = "d",
-       draft_message = "<C-r>",
+       draft_message = "<C-n>",
        edit_message = "e",
        delete_message = "d",
        toggle_settings = "<C-o>",
