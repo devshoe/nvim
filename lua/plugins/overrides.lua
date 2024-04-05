@@ -11,7 +11,6 @@ return {
     config = function ()
       local opts = require("configs.telescope")
       require("telescope").setup(opts.telescope)
-      require("telescope").load_extension("file_browser")
     end
   },
 

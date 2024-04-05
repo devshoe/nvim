@@ -8,6 +8,7 @@ local options = {
   hijack_cursor = true,
   hijack_unnamed_buffer_when_opening = false,
   sync_root_with_cwd = true,
+  update_cwd = true,
   update_focused_file = {
     enable = true,
     update_root = false,
@@ -31,6 +32,10 @@ local options = {
       resize_window = true,
     },
   },
+  on_attach = function (bufnr)
+    api.config.mappings.default_on_attach(bufnr)
+    -- vim.keymap.set('n', '<C-]>', 
+    end,
   renderer = {
     root_folder_label = false,
     highlight_git = true,
