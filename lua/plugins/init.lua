@@ -1,5 +1,9 @@
 return {
   {
+    'thePrimeagen/vim-be-good',
+    cmd = {'VimBeGood'},
+  },
+  {
     'fatih/vim-go',
     lazy = false,
   },

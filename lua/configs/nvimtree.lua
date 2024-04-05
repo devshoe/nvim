@@ -1,3 +1,4 @@
+local api = require('nvim-tree.api')
 local options = {
   filters = {
     dotfiles = false,
@@ -16,6 +17,7 @@ local options = {
     side = "left",
     width = 30,
     preserve_window_proportions = true,
+    
   },
   git = {
     enable = true,
