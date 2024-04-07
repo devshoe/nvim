@@ -6,7 +6,7 @@ local M = {}
 
 
 M.ui = {
-	theme = "chocolate",
+	theme = "blossom_light",
 
 	hl_override = {
 		Comment = { bold = true },
