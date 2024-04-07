@@ -4,7 +4,7 @@ require("nvchad.mappings")
 
 local map = vim.keymap.set
 
--- Change behaviour of default NVChad tab switching
+-- Change behaviour of default NVChad buffer switching
 vim.api.nvim_del_keymap("n", "<Tab>")
 vim.api.nvim_del_keymap("n", "<S-Tab>")
 map("n", "<leader><tab>", function()
@@ -87,6 +87,9 @@ map({ "n", "v" }, "<Down>", "<Nop>", { noremap = true })
 map({ "n", "v" }, "<Left>", "<Nop>", { noremap = true })
 map({ "n", "v" }, "<Right>", "<Nop>", { noremap = true })
 
+map({"n","v"}, "<C-n>", function ()
+  require("mini.files").open()
+end)
 --nvchad term bindings
 map({ "n", "t" }, "<leader>tv", function()
 	require("nvchad.term").toggle({ pos = "vsp", id = "vtoggleTerm", size = 0.3 })
