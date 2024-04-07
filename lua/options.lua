@@ -7,4 +7,4 @@ local o = vim.o
 o.relativenumber = true
 o.timeoutlen = 200
 o.mouse = ""
-o.autochdir = true
+-- o.autochdir = true

@@ -26,6 +26,9 @@ map("n", "<leader>c_", "<cmd>cd ..<CR>", { desc = "Set working dir to one above"
 map("n", "<C-d>", "<C-d>zz", { desc = "Down half page" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Up half page" })
 
+--change behaviour of yanking
+map({"n", "v", "i"}, "d", '"_d', {desc = "Delete [no yank] <Motion>"})
+map({"n", "v", "i"}, "c", '"_c', {desc = "Change [no yank] <Motion>"})
 --Telescope add ons
 map(
 	"n",
@@ -35,7 +38,7 @@ map(
 )
 map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Search for symbols in current document" })
 map("v", "<leader>fw", '"zy:Telescope grep_string default_text=<C-r>z<cr>', { desc = "Search for selection" })
--- map("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "Telescope File Explorer" })
+map("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "Telescope File Explorer" })
 -- Sessions
 map("n", "<leader>sf", "<cmd>SearchSession<CR>", { desc = "Session Find" })
 map("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Session Save" })
