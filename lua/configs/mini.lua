@@ -16,7 +16,7 @@ M.files = {
 	mappings = {
 		close = "q",
 		go_in = "l",
-		go_in_plus = "L",
+		go_in_plus = "<CR>",
 		go_out = "h",
 		go_out_plus = "H",
 		reset = "<BS>",
@@ -57,7 +57,7 @@ M.animate = {
 		enable = true,
 
 		-- Timing of animation (how steps will progress in time)
-		--timing = --<function: implements linear total 250ms animation duration>,
+		timing = require("mini.animate").gen_timing.linear({ duration = 100, unit = "total" }),
 
 		-- Path generator for visualized cursor movement
 		--path = --<function: implements shortest line path>,
@@ -148,5 +148,9 @@ M.comment = {
 
 M.statusline = {
 	use_icons = vim.g.have_nerd_font,
+}
+
+M.cursorword = {
+	delay = 1,
 }
 return M

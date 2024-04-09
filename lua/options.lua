@@ -23,8 +23,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = "yes"
-
+-- vim.opt.signcolumn = "yes"
+vim.opt.numberwidth = 2
 -- Decrease update time
 vim.opt.updatetime = 250
 
@@ -56,3 +56,5 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
+vim.g.tmux_navigator_save_on_switch = 2

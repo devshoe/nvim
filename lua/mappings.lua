@@ -13,17 +13,24 @@ M.page_navigation = function()
 	map("n", "<Esc>", "<cmd>nohlsearch<CR>")
 end
 
-M.window_navigation = function()
-	map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-	map("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-	map("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-	map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-	map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-end
-
 M.buffer_navigation = function()
 	map("n", "<leader><Tab>", "<cmd>bn<CR>", { desc = "Next buffer" })
 	map("n", "<leader><S-Tab>", "<cmd>bp<CR>", { desc = "Prev buffer" })
+end
+
+M.terminal = function()
+	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+	map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
+	map({ "n", "v" }, "<leader>tv", "<cmd>!tmux split-window -h -l 30 <CR>", { desc = "Tmux new vertical split" })
+	map({ "n", "v" }, "<leader>tt", "<cmd>!tmux resize-pane -Z<CR><CR>", { desc = "Toggle terminal" })
+end
+
+M.window_navigation = function()
+	map({ "n", "v" }, "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Move focus to the left window" })
+	map({ "n", "v" }, "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move focus to the right window" })
+	map({ "n", "v" }, "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move focus to the lower window" })
+	map({ "n", "v" }, "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move focus to the upper window" })
+	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
 end
 
 M.diagnostics = function()
@@ -96,19 +103,9 @@ M.mini = {
 
 	comment = function()
 		return {
-
-			-- Toggle comment (like `gcip` - comment inner paragraph) for both
-			-- Normal and Visual modes
 			comment = "gc",
-
-			-- Toggle comment on current line
 			comment_line = "gcc",
-
-			-- Toggle comment on visual selection
 			comment_visual = "gc",
-
-			-- Define 'comment' textobject (like `dgc` - delete whole comment block)
-			-- Works also in Visual mode if mapping differs from `comment_visual`
 			textobject = "gc",
 		}
 	end,

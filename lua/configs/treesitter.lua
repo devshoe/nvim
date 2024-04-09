@@ -1,5 +1,5 @@
 return {
-	ensure_installed = { "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
+	ensure_installed = { "go", "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
 	-- Autoinstall languages that are not installed
 	auto_install = true,
 	highlight = {
