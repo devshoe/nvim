@@ -45,9 +45,9 @@ return {
 	config = function()
 		local opts = require("configs.mini")
 		require("mini.files").setup(opts.files)
-		require("mini.animate").setup(opts.animate)
+		-- require("mini.animate").setup(opts.animate)
 		require("mini.comment").setup(opts.comment)
 		require("mini.statusline").setup(opts.statusline)
-		require("mini.cursorword").setup(opts.cursorword)
+		-- require("mini.cursorword").setup(opts.cursorword)
 	end,
 }

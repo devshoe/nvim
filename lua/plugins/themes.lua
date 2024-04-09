@@ -22,7 +22,11 @@ return {
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.o.background = "light" -- or 'light'
+			if tonumber(os.date("%H")) > 17 then
+				vim.o.background = "dark"
+			else
+				vim.o.background = "light" -- or 'light'
+			end
 
 			vim.cmd.colorscheme("solarized")
 		end,

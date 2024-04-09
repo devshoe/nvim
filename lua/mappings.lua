@@ -93,6 +93,12 @@ M.telescope = function()
 	end, { desc = "[F]ind [N]eovim files" })
 end
 
+M.dadbod = function()
+	map("n", "<leader>dbo", "<cmd>DBUI<CR>", { desc = "Open DB UI" })
+	map("n", "<leader>dba", "<cmd>DBUIAddConnection<CR>", { desc = "Add DB Connection" })
+	map("n", "<leader>dbf", "<cmd>DBUIFindBuffer<CR>", { desc = "Find DB Open Buffers" })
+	map("n", "<leader>dbx", "<cmd>DBUIClose<CR>", { desc = "Close DB Buffers" })
+end
 M.mini = {
 	files = function()
 		local open_minifiles = function()
@@ -158,7 +164,8 @@ M.cmp = function(cmp, luasnip)
 		["<S-Tab>"] = cmp.mapping.select_prev_item(),
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<CR>"] = cmp.mapping.confirm({ select = false }),
+		["<C-x>"] = cmp.mapping.close(),
 		["<C-Space>"] = cmp.mapping.complete({}),
 		["<C-l>"] = cmp.mapping(function()
 			if luasnip.expand_or_locally_jumpable() then
