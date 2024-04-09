@@ -1,121 +1,160 @@
-require("nvchad.mappings")
-
--- add yours here
-
+local M = {}
 local map = vim.keymap.set
 
--- Change behaviour of default NVChad buffer switching
-vim.api.nvim_del_keymap("n", "<Tab>")
-vim.api.nvim_del_keymap("n", "<S-Tab>")
-map("n", "<leader><tab>", function()
-	require("nvchad.tabufline").next()
-end, { desc = "Buffer Goto next" })
+M.page_navigation = function()
+	map("n", "<C-d>", "<C-d>zz", { desc = "Down half page" })
+	map("n", "<C-u>", "<C-u>zz", { desc = "Up half page" })
 
-map("n", "<leader><S-tab>", function()
-	require("nvchad.tabufline").prev()
-end, { desc = "Buffer Goto prev" })
+	map("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
+	map("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
+	map("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
+	map("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
---Utility Mappings
-map(
-	"n",
-	"<leader>c$",
-	"<cmd>set autochdir<CR><cmd>set noautochdir<CR>",
-	{ desc = "Set working dir to folder of current buffer" }
-)
-map("n", "<leader>c_", "<cmd>cd ..<CR>", { desc = "Set working dir to one above" })
-map("n", "<C-d>", "<C-d>zz", { desc = "Down half page" })
-map("n", "<C-u>", "<C-u>zz", { desc = "Up half page" })
+	map("n", "<Esc>", "<cmd>nohlsearch<CR>")
+end
 
---change behaviour of yanking
-map({"n", "v"}, "d", '"_d', {desc = "Delete [no yank] <Motion>"})
-map({"n", "v"}, "c", '"_c', {desc = "Change [no yank] <Motion>"})
---Telescope add ons
-map(
-	"n",
-	"<leader>fs",
-	"<cmd>Telescope lsp_dynamic_workspace_symbols<CR>",
-	{ desc = "Search for symbols in current workspace" }
-)
-map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Search for symbols in current document" })
-map({ "v" }, "<leader>fw", '"zy<cmd>Telescope grep_string default_text=<C-r>z<cr>', { desc = "Search for selection" })
-map("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "Telescope File Explorer" })
--- Sessions
-map("n", "<leader>sf", "<cmd>SearchSession<CR>", { desc = "Session Find" })
-map("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Session Save" })
+M.window_navigation = function()
+	map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+	map("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+	map("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+	map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+	map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+end
 
---AI Tools
-map("n", "<leader>acc", "<cmd>ChatGPT<CR>", { desc = "AI ChatGPT Full Chat" })
-map({ "n", "v" }, "<leader>aci", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "ChatGPT Edit With Instructions" })
-map({ "n", "v" }, "<leader>acg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "ChatGPT: Correct Grammar" })
--- map({"n","v"},"<leader>act","<cmd>ChatGPTRun translate<CR>",{desc = "ChatGPT"})
-map({ "n", "v" }, "<leader>ack", "<cmd>ChatGPTRun keywords<CR>", { desc = "ChatGPT: Extract Keywords" })
-map({ "n", "v" }, "<leader>K", "<cmd>ChatGPTRun docstring<CR>", { desc = "ChatGPT: Generate Docs" })
-map({ "n", "v" }, "<leader>act", "<cmd>ChatGPTRun add_tests<CR>", { desc = "ChatGPT: Add Tests" })
-map({ "n", "v" }, "<leader>aco", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "ChatGPT: Optimize Code" })
-map({ "n", "v" }, "<leader>acs", "<cmd>ChatGPTRun summarize<CR>", { desc = "ChatGPT: Summarize" })
-map({ "n", "v" }, "<leader>acf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "ChatGPT: Fix Bugs" })
-map({ "n", "v" }, "<leader>ace", "<cmd>ChatGPTRun explain_code<CR>", { desc = "ChatGPT: Explain" })
-map({ "n", "v" }, "<leader>acx", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "ChatGPT: Roxygen Edit" })
-map(
-	{ "n", "v" },
-	"<leader>aca",
-	"<cmd>ChatGPTRun code_readability_analysis<CR>",
-	{ desc = "ChatGPT: Code Readability Analysis" }
-)
-map("n", "<leader>ag", function()
-	local status = vim.fn.execute("Copilot status")
-	if string.find(status, "Ready") then
-		-- If Copilot is ready, disable it
-		vim.cmd("Copilot disable")
-		print("Copilot disabled")
-	else
-		-- If Copilot is not ready, enable it
-		vim.cmd("Copilot enable")
-		print("Copilot enabled")
+M.buffer_navigation = function()
+	map("n", "<leader><Tab>", "<cmd>bn<CR>", { desc = "Next buffer" })
+	map("n", "<leader><S-Tab>", "<cmd>bp<CR>", { desc = "Prev buffer" })
+end
+
+M.diagnostics = function()
+	map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+	map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+	map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+	map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+end
+
+M.lsp = function(event)
+	local map = function(keys, func, desc)
+		map("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 	end
-end, { desc = "AI Github Copilot Toggle" })
+	map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+	map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+	map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+	map("K", vim.lsp.buf.hover, "Hover Documentation")
+	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+end
 
---Database/ Dadbod
-map("n", "<leader>dbo", "<cmd>DBUI<CR>", { desc = "Open DB UI" })
-map("n", "<leader>dba", "<cmd>DBUIAddConnection<CR>", { desc = "Add DB Connection" })
-map("n", "<leader>dbf", "<cmd>DBUIFindBuffer<CR>", { desc = "Find DB Open Buffers" })
-map("n", "<leader>dbx", "<cmd>DBUIClose<CR>", { desc = "Close DB Buffers" })
+M.telescope = function()
+	local builtin = require("telescope.builtin")
+	map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+	map("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
+	map("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+	map("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
+	map("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
+	map("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
+	map("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
+	map("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
+	map("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
+	map("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
--- Disable arrow keys in normal and visual mode
-map({ "n", "v" }, "<Up>", "<Nop>", { noremap = true })
-map({ "n", "v" }, "<Down>", "<Nop>", { noremap = true })
-map({ "n", "v" }, "<Left>", "<Nop>", { noremap = true })
-map({ "n", "v" }, "<Right>", "<Nop>", { noremap = true })
+	-- Slightly advanced example of overriding default behavior and theme
+	map("n", "<leader>/", function()
+		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+			winblend = 10,
+			previewer = false,
+		}))
+	end, { desc = "[/] Fuzzily search in current buffer" })
 
-map({"n","v"}, "<C-n>", function ()
-  require("mini.files").open()
-end)
---nvchad term bindings
-map({ "n", "t" }, "<leader>tv", function()
-	require("nvchad.term").toggle({ pos = "vsp", id = "vtoggleTerm", size = 0.3 })
-end, { desc = "Terminal Toggleable vertical term" })
+	-- It's also possible to pass additional configuration options.
+	--  See `:help telescope.builtin.live_grep()` for information about particular keys
+	map("n", "<leader>s/", function()
+		builtin.live_grep({
+			grep_open_files = true,
+			prompt_title = "Live Grep in Open Files",
+		})
+	end, { desc = "[F]ind [/] in Open Files" })
 
-map({ "n", "t" }, "<leader>tt", function()
-	require("nvchad.term").toggle({ pos = "sp", id = "htoggleTerm", size = 0.3 })
-end, { desc = "Terminal New horizontal term" })
+	-- Shortcut for searching your Neovim configuration files
+	map("n", "<leader>sn", function()
+		builtin.find_files({ cwd = vim.fn.stdpath("config") })
+	end, { desc = "[F]ind [N]eovim files" })
+end
 
-map({ "n", "t" }, "<leader>tf", function()
-	require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
-end, { desc = "Terminal Toggle Floating term" })
+M.mini = function()
+	local open_minifiles = function()
+		require("mini.files").open()
+	end
+	map({ "n", "v" }, "<C-n>", open_minifiles, { desc = "Open file explorer" })
+end
 
-map("t", "<esc>", [[<C-\><C-n>]])
+M.sessions = function()
+	map("n", "<leader>sf", "<cmd>SearchSession<CR>", { desc = "Session Find" })
+	map("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Session Save" })
+end
 
---DBUI
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "sql",
-	callback = function()
-		local function map(mode, lhs, rhs, opts)
-			local bufnr = vim.api.nvim_get_current_buf()
-			vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+M.ai = function()
+	-- Sessions
+	toggle_copilot = function()
+		local status = vim.fn.execute("Copilot status")
+		if string.find(status, "Ready") then
+			-- If Copilot is ready, disable it
+			vim.cmd("Copilot disable")
+			print("Copilot disabled")
+		else
+			-- If Copilot is not ready, enable it
+			vim.cmd("Copilot enable")
+			print("Copilot enabled")
 		end
+	end
+	--AI Tools
+	map("n", "<leader>acc", "<cmd>ChatGPT<CR>", { desc = "AI ChatGPT Full Chat" })
+	map({ "n", "v" }, "<leader>aci", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "ChatGPT Edit With Instructions" })
+	map({ "n", "v" }, "<leader>acg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "ChatGPT: Correct Grammar" })
+	-- map({"n","v"},"<leader>act","<cmd>ChatGPTRun translate<CR>",{desc = "ChatGPT"})
+	map({ "n", "v" }, "<leader>ack", "<cmd>ChatGPTRun keywords<CR>", { desc = "ChatGPT: Extract Keywords" })
+	map({ "n", "v" }, "<leader>K", "<cmd>ChatGPTRun docstring<CR>", { desc = "ChatGPT: Generate Docs" })
+	map({ "n", "v" }, "<leader>act", "<cmd>ChatGPTRun add_tests<CR>", { desc = "ChatGPT: Add Tests" })
+	map({ "n", "v" }, "<leader>aco", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "ChatGPT: Optimize Code" })
+	map({ "n", "v" }, "<leader>acs", "<cmd>ChatGPTRun summarize<CR>", { desc = "ChatGPT: Summarize" })
+	map({ "n", "v" }, "<leader>acf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "ChatGPT: Fix Bugs" })
+	map({ "n", "v" }, "<leader>ace", "<cmd>ChatGPTRun explain_code<CR>", { desc = "ChatGPT: Explain" })
+	map({ "n", "v" }, "<leader>acx", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "ChatGPT: Roxygen Edit" })
+	map(
+		{ "n", "v" },
+		"<leader>aca",
+		"<cmd>ChatGPTRun code_readability_analysis<CR>",
+		{ desc = "ChatGPT: Code Readability Analysis" }
+	)
+	map("n", "<leader>ag", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+end
 
-		map("n", "<leader>dbr", "<Plug>(DBUI_ExecuteQuery)", { desc = "Execute current file" })
-		map("v", "<leader>dbr", "<Plug>(DBUI_ExecuteQuery)", { desc = "Execute current selection" })
-		map("n", "<leader>dbs", "<Plug>(DBUI_SaveQuery)", { desc = "Save Current Query" })
-	end,
-})
+M.cmp = function(cmp, luasnip)
+	return {
+		["<Tab>"] = cmp.mapping.select_next_item(),
+		["<S-Tab>"] = cmp.mapping.select_prev_item(),
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<C-Space>"] = cmp.mapping.complete({}),
+		["<C-l>"] = cmp.mapping(function()
+			if luasnip.expand_or_locally_jumpable() then
+				luasnip.expand_or_jump()
+			end
+		end, { "i", "s" }),
+		["<C-h>"] = cmp.mapping(function()
+			if luasnip.locally_jumpable(-1) then
+				luasnip.jump(-1)
+			end
+		end, { "i", "s" }),
+
+		-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
+		--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+	}
+end
+return M
