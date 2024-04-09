@@ -1,6 +1,11 @@
 local M = {}
 
 M.telescope = {
+	pickers = {
+		colorscheme = {
+			enable_preview = true,
+		},
+	},
 	defaults = {
 		vimgrep_arguments = {
 			"rg",

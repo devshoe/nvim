@@ -46,7 +46,7 @@ M.files = {
 		-- Width of non-focused window
 		width_nofocus = 15,
 		-- Width of preview window
-		width_preview = 25,
+		width_preview = 50,
 	},
 }
 
@@ -135,21 +135,7 @@ M.comment = {
 	},
 
 	-- Module mappings. Use `''` (empty string) to disable one.
-	mappings = {
-		-- Toggle comment (like `gcip` - comment inner paragraph) for both
-		-- Normal and Visual modes
-		comment = "gc",
-
-		-- Toggle comment on current line
-		comment_line = "gcc",
-
-		-- Toggle comment on visual selection
-		comment_visual = "gc",
-
-		-- Define 'comment' textobject (like `dgc` - delete whole comment block)
-		-- Works also in Visual mode if mapping differs from `comment_visual`
-		textobject = "gc",
-	},
+	mappings = require("mappings").mini.comment(),
 
 	-- Hook functions to be executed at certain stage of commenting
 	hooks = {
@@ -158,5 +144,9 @@ M.comment = {
 		-- After successful commenting. Does nothing by default.
 		post = function() end,
 	},
+}
+
+M.statusline = {
+	use_icons = vim.g.have_nerd_font,
 }
 return M

@@ -21,6 +21,7 @@ return {
 		require("mini.files").setup(opts.files)
 		require("mini.animate").setup(opts.animate)
 		require("mini.comment").setup(opts.comment)
-		require("mini.statusline").setup({ use_icons = vim.g.have_nerd_font })
+		require("mini.statusline").setup(opts.statusline)
+		require("mini.cursorword").setup({})
 	end,
 }

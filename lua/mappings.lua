@@ -61,7 +61,7 @@ M.telescope = function()
 	map("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 	map("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 	map("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-
+	map("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind [T]heme" })
 	-- Slightly advanced example of overriding default behavior and theme
 	map("n", "<leader>/", function()
 		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -86,12 +86,33 @@ M.telescope = function()
 	end, { desc = "[F]ind [N]eovim files" })
 end
 
-M.mini = function()
-	local open_minifiles = function()
-		require("mini.files").open()
-	end
-	map({ "n", "v" }, "<C-n>", open_minifiles, { desc = "Open file explorer" })
-end
+M.mini = {
+	files = function()
+		local open_minifiles = function()
+			require("mini.files").open()
+		end
+		map({ "n", "v" }, "<C-n>", open_minifiles, { desc = "Open file explorer" })
+	end,
+
+	comment = function()
+		return {
+
+			-- Toggle comment (like `gcip` - comment inner paragraph) for both
+			-- Normal and Visual modes
+			comment = "gc",
+
+			-- Toggle comment on current line
+			comment_line = "gcc",
+
+			-- Toggle comment on visual selection
+			comment_visual = "gc",
+
+			-- Define 'comment' textobject (like `dgc` - delete whole comment block)
+			-- Works also in Visual mode if mapping differs from `comment_visual`
+			textobject = "gc",
+		}
+	end,
+}
 
 M.sessions = function()
 	map("n", "<leader>sf", "<cmd>SearchSession<CR>", { desc = "Session Find" })
