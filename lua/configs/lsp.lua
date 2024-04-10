@@ -39,8 +39,6 @@ M.lsp_config = function()
 				},
 			},
 		},
-
-		gopls = {},
 	}
 
 	require("mason").setup()

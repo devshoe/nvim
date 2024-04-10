@@ -1,5 +1,7 @@
 local M = {}
 
+local actions = require("telescope.actions")
+
 M.telescope = {
 	pickers = {
 		colorscheme = {
@@ -16,6 +18,7 @@ M.telescope = {
 			"--line-number",
 			"--column",
 			"--smart-case",
+			"--fixed-strings",
 		},
 		prompt_prefix = "   ",
 		selection_caret = "  ",
@@ -52,7 +55,14 @@ M.telescope = {
 		-- Developer configurations: Not meant for general override
 		buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 		mappings = {
-			n = { ["q"] = require("telescope.actions").close },
+			n = {
+				["q"] = actions.close,
+				["n"] = actions.cycle_history_prev,
+				["N"] = actions.cycle_history_next,
+				["d"] = actions.delete_buffer,
+				["gv"] = actions.file_vsplit,
+				["gs"] = actions.file_split,
+			},
 		},
 	},
 

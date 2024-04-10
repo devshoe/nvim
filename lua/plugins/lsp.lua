@@ -16,7 +16,8 @@ return {
 		event = "VeryLazy",
 		opts = {},
 		config = function(_, opts)
-			require("lsp_signature").setup(require("configs.lsp").lsp_signature)
+			local opts = require("configs.lsp").lsp_signature
+			require("lsp_signature").setup(opts)
 		end,
 	},
 }

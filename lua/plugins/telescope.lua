@@ -26,7 +26,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
 	config = function()
 		local opts = require("configs.telescope")
 		require("telescope").setup(opts.telescope)
-		require("mappings").telescope()
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 	end,

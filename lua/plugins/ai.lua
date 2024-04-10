@@ -1,5 +1,11 @@
 return {
 	{
+		"robitx/gp.nvim",
+		config = function()
+			require("gp").setup()
+		end,
+	},
+	{
 		"ilan-schemoul/ChatGPT.nvim",
 		branch = "fix-invalid-capture",
 		event = "VeryLazy",

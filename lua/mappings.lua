@@ -18,6 +18,7 @@ M.buffer_navigation = function()
 	map("n", "<leader><S-Tab>", "<cmd>bp<CR>", { desc = "Prev buffer" })
 end
 
+-- terminal sets commands only applicable inside tmux sessions like split horizontal, vertical and maximize
 M.terminal = function()
 	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 	map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
@@ -33,13 +34,6 @@ M.window_navigation = function()
 	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
 end
 
-M.diagnostics = function()
-	map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-	map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-	map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-	map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-end
-
 M.lsp = function(event)
 	local map = function(keys, func, desc)
 		map("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
@@ -50,8 +44,12 @@ M.lsp = function(event)
 	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 	map("<leader>fsd", require("telescope.builtin").lsp_document_symbols, "[F]ind [S]ymbols in [D]ocument]")
 	map("<leader>fsw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
-	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename Variable")
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+	map("<leader>cd", vim.diagnostic.goto_prev, "[C]ode Diagnostic [D]own")
+	map("<leader>cu", vim.diagnostic.goto_next, "[C]ode Diagnostic [U]p")
+	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
+	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
 	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 end
@@ -78,22 +76,7 @@ M.telescope = function()
 		{ desc = "[F]ind selected [W]ords" }
 	)
 	-- Slightly advanced example of overriding default behavior and theme
-	map("n", "<leader>fb", function()
-		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
-		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-			winblend = 10,
-			previewer = false,
-		}))
-	end, { desc = "[F]ind in current [B]uffer" })
-
-	-- It's also possible to pass additional configuration options.
-	--  See `:help telescope.builtin.live_grep()` for information about particular keys
-	map("n", "<leader>s/", function()
-		builtin.live_grep({
-			grep_open_files = true,
-			prompt_title = "Live Grep in Open Files",
-		})
-	end, { desc = "[F]ind [/] in Open Files" })
+	map("n", "<leader>fb", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
 
 	-- Shortcut for searching your Neovim configuration files
 	map("n", "<leader>sn", function()
@@ -107,6 +90,7 @@ M.dadbod = function()
 	map("n", "<leader>dbf", "<cmd>DBUIFindBuffer<CR>", { desc = "Find DB Open Buffers" })
 	map("n", "<leader>dbx", "<cmd>DBUIClose<CR>", { desc = "Close DB Buffers" })
 end
+
 M.mini = {
 	files = function()
 		local open_minifiles = function()
@@ -130,41 +114,56 @@ M.sessions = function()
 	map("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Session Save" })
 end
 
-M.ai = function()
-	-- Sessions
-	toggle_copilot = function()
-		local status = vim.fn.execute("Copilot status")
-		if string.find(status, "Ready") then
-			-- If Copilot is ready, disable it
-			vim.cmd("Copilot disable")
-			print("Copilot disabled")
-		else
-			-- If Copilot is not ready, enable it
-			vim.cmd("Copilot enable")
-			print("Copilot enabled")
+M.ai = {
+	chatgpt = function()
+		-- Sessions
+		--AI Tools
+		map("n", "<leader>acc", "<cmd>ChatGPT<CR>", { desc = "AI ChatGPT Full Chat" })
+		map(
+			{ "n", "v" },
+			"<leader>aci",
+			"<cmd>ChatGPTEditWithInstruction<CR>",
+			{ desc = "ChatGPT Edit With Instructions" }
+		)
+		map(
+			{ "n", "v" },
+			"<leader>acg",
+			"<cmd>ChatGPTRun grammar_correction<CR>",
+			{ desc = "ChatGPT: Correct Grammar" }
+		)
+		-- map({"n","v"},"<leader>act","<cmd>ChatGPTRun translate<CR>",{desc = "ChatGPT"})
+		map({ "n", "v" }, "<leader>ack", "<cmd>ChatGPTRun keywords<CR>", { desc = "ChatGPT: Extract Keywords" })
+		map({ "n", "v" }, "<leader>K", "<cmd>ChatGPTRun docstring<CR>", { desc = "ChatGPT: Generate Docs" })
+		map({ "n", "v" }, "<leader>act", "<cmd>ChatGPTRun add_tests<CR>", { desc = "ChatGPT: Add Tests" })
+		map({ "n", "v" }, "<leader>aco", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "ChatGPT: Optimize Code" })
+		map({ "n", "v" }, "<leader>acs", "<cmd>ChatGPTRun summarize<CR>", { desc = "ChatGPT: Summarize" })
+		map({ "n", "v" }, "<leader>acf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "ChatGPT: Fix Bugs" })
+		map({ "n", "v" }, "<leader>ace", "<cmd>ChatGPTRun explain_code<CR>", { desc = "ChatGPT: Explain" })
+		map({ "n", "v" }, "<leader>acx", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "ChatGPT: Roxygen Edit" })
+		map(
+			{ "n", "v" },
+			"<leader>aca",
+			"<cmd>ChatGPTRun code_readability_analysis<CR>",
+			{ desc = "ChatGPT: Code Readability Analysis" }
+		)
+	end,
+
+	copilot = function()
+		local toggle_copilot = function()
+			local status = vim.fn.execute("Copilot status")
+			if string.find(status, "Ready") then
+				-- If Copilot is ready, disable it
+				vim.cmd("Copilot disable")
+				print("Copilot disabled")
+			else
+				-- If Copilot is not ready, enable it
+				vim.cmd("Copilot enable")
+				print("Copilot enabled")
+			end
 		end
-	end
-	--AI Tools
-	map("n", "<leader>acc", "<cmd>ChatGPT<CR>", { desc = "AI ChatGPT Full Chat" })
-	map({ "n", "v" }, "<leader>aci", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "ChatGPT Edit With Instructions" })
-	map({ "n", "v" }, "<leader>acg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "ChatGPT: Correct Grammar" })
-	-- map({"n","v"},"<leader>act","<cmd>ChatGPTRun translate<CR>",{desc = "ChatGPT"})
-	map({ "n", "v" }, "<leader>ack", "<cmd>ChatGPTRun keywords<CR>", { desc = "ChatGPT: Extract Keywords" })
-	map({ "n", "v" }, "<leader>K", "<cmd>ChatGPTRun docstring<CR>", { desc = "ChatGPT: Generate Docs" })
-	map({ "n", "v" }, "<leader>act", "<cmd>ChatGPTRun add_tests<CR>", { desc = "ChatGPT: Add Tests" })
-	map({ "n", "v" }, "<leader>aco", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "ChatGPT: Optimize Code" })
-	map({ "n", "v" }, "<leader>acs", "<cmd>ChatGPTRun summarize<CR>", { desc = "ChatGPT: Summarize" })
-	map({ "n", "v" }, "<leader>acf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "ChatGPT: Fix Bugs" })
-	map({ "n", "v" }, "<leader>ace", "<cmd>ChatGPTRun explain_code<CR>", { desc = "ChatGPT: Explain" })
-	map({ "n", "v" }, "<leader>acx", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "ChatGPT: Roxygen Edit" })
-	map(
-		{ "n", "v" },
-		"<leader>aca",
-		"<cmd>ChatGPTRun code_readability_analysis<CR>",
-		{ desc = "ChatGPT: Code Readability Analysis" }
-	)
-	map("n", "<leader>ag", toggle_copilot, { desc = "AI Github Copilot Toggle" })
-end
+		map("n", "<leader>ag", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+	end,
+}
 
 M.cmp = function(cmp, luasnip)
 	return {

@@ -5,6 +5,7 @@ return {
 		config = function(opts)
 			local opts = require("configs.autosession")
 			require("auto-session").setup(opts)
+			require("mappings").sessions()
 		end,
 	},
 	{
