@@ -16,7 +16,7 @@ M.cmp = function()
 		completion = {
 			completeopt = "menu,menuone,noinsert,noselect",
 		},
-		mapping = require("mappings").cmp(cmp, luasnip),
+		mapping = require("mappings").cmp(),
 		sources = {
 			{ name = "nvim_lsp" },
 			{ name = "luasnip" },

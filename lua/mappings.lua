@@ -34,26 +34,6 @@ M.window_navigation = function()
 	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
 end
 
-M.lsp = function(event)
-	local map = function(keys, func, desc)
-		map("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-	end
-	map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-	map("<leader>fsd", require("telescope.builtin").lsp_document_symbols, "[F]ind [S]ymbols in [D]ocument]")
-	map("<leader>fsw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
-	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename Variable")
-	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-	map("<leader>cd", vim.diagnostic.goto_prev, "[C]ode Diagnostic [D]own")
-	map("<leader>cu", vim.diagnostic.goto_next, "[C]ode Diagnostic [U]p")
-	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
-	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
-	map("K", vim.lsp.buf.hover, "Hover Documentation")
-	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-end
-
 M.telescope = function()
 	local builtin = require("telescope.builtin")
 	map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
@@ -165,7 +145,12 @@ M.ai = {
 	end,
 }
 
-M.cmp = function(cmp, luasnip)
+-- we map both luasnip and cmp bindings here
+--
+
+M.cmp = function()
+	local cmp = require("cmp")
+	local luasnip = require("luasnip")
 	return {
 		["<Tab>"] = cmp.mapping.select_next_item(),
 		["<S-Tab>"] = cmp.mapping.select_prev_item(),
@@ -188,6 +173,27 @@ M.cmp = function(cmp, luasnip)
 		-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 		--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 	}
+end
+
+-- used internally
+M.lsp = function(event)
+	local map = function(keys, func, desc)
+		map("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+	end
+	map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+	map("<leader>fsd", require("telescope.builtin").lsp_document_symbols, "[F]ind [S]ymbols in [D]ocument]")
+	map("<leader>fsw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
+	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename Variable")
+	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+	map("<leader>cd", vim.diagnostic.goto_prev, "[C]ode Diagnostic [D]own")
+	map("<leader>cu", vim.diagnostic.goto_next, "[C]ode Diagnostic [U]p")
+	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
+	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
+	map("K", vim.lsp.buf.hover, "Hover Documentation")
+	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 end
 
 M.language_specific = {
