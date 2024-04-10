@@ -3,7 +3,7 @@ local files_set_cwd = function(path)
 	local cur_entry_path = require("mini.files").get_fs_entry().path
 	local cur_directory = vim.fs.dirname(cur_entry_path)
 	vim.fn.chdir(cur_directory)
-	print("changed cwd to `{cur_directory}`")
+	print("changed cwd to `" .. cur_directory .. "`")
 end
 
 vim.api.nvim_create_autocmd("User", {

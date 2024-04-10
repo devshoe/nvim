@@ -36,7 +36,7 @@ return {
 			},
 		},
 		keymaps = {
-			close = "q",
+			close = "<C-q>",
 			yank_last = "<C-y>",
 			yank_last_code = "<C-k>",
 			scroll_up = "<C-u>",
@@ -49,7 +49,7 @@ return {
 			select_session = "<CR>",
 			rename_session = "r",
 			delete_session = "d",
-			draft_message = "<C-n>",
+			draft_message = "<C-/>",
 			edit_message = "e",
 			delete_message = "d",
 			toggle_settings = "<C-o>",

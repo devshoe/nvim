@@ -48,8 +48,8 @@ M.lsp = function(event)
 	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-	map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-	map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+	map("<leader>fsd", require("telescope.builtin").lsp_document_symbols, "[F]ind [S]ymbols in [D]ocument]")
+	map("<leader>fsw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
 	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
@@ -61,7 +61,7 @@ M.telescope = function()
 	map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
 	map("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
 	map("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
-	map("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
+	map("n", "<leader>fx", builtin.builtin, { desc = "[F]ind Select Telescope" })
 	map("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
 	map("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
 	map("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
@@ -69,14 +69,22 @@ M.telescope = function()
 	map("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 	map("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 	map("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind [T]heme" })
+	-- for visual selection
+
+	map(
+		"v",
+		"<leader>fw",
+		'"zy<Cmd>lua require("telescope.builtin").grep_string({search=vim.trim(vim.fn.getreg("z"))})<CR>',
+		{ desc = "[F]ind selected [W]ords" }
+	)
 	-- Slightly advanced example of overriding default behavior and theme
-	map("n", "<leader>/", function()
+	map("n", "<leader>fb", function()
 		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
 		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 			winblend = 10,
 			previewer = false,
 		}))
-	end, { desc = "[/] Fuzzily search in current buffer" })
+	end, { desc = "[F]ind in current [B]uffer" })
 
 	-- It's also possible to pass additional configuration options.
 	--  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -182,4 +190,22 @@ M.cmp = function(cmp, luasnip)
 		--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 	}
 end
+
+M.language_specific = {
+	go = function()
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "go",
+			callback = function()
+				vim.api.nvim_buf_set_keymap(
+					0,
+					"n",
+					"<F5>",
+					':echo "This is a go file"<CR>',
+					{ noremap = true, silent = true }
+				)
+			end,
+		})
+	end,
+}
+
 return M
