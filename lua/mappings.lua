@@ -11,19 +11,26 @@ M.page_navigation = function()
 	map("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
 	map("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+	-- okay, so y,s,c,x,d are the commands that delete or copy to clipboard
+	-- if we want y to work as is.
+	-- disable yanking completely for s and c in all modes
+	-- disable yanking for x in normal mode
+	-- disable yanking for d in visual mode
+	-- open question: do we want deletion yank in normal mode?
+	map({ "v" }, "d", '"dd', { desc = "Delete without yanking" })
+	map({ "v", "n" }, "c", '"cc', { desc = "Delete and Enter Insert without yanking" })
+	map({ "v", "n" }, "s", '"ss', { desc = "Delete and Enter Insert without yanking" })
+	map({ "v", "n" }, "S", '"sS', { desc = "Delete and Enter Insert without yanking" })
+	map({ "n" }, "x", '"_x', { desc = "Delete Character Under Cursor" })
+	map("n", "<S-Enter>", ":normal! o<CR>", { desc = "Insert new line" })
 end
 
 M.buffer_navigation = function()
 	map("n", "<leader><Tab>", "<cmd>bn<CR>", { desc = "Next buffer" })
 	map("n", "<leader><S-Tab>", "<cmd>bp<CR>", { desc = "Prev buffer" })
-end
-
--- terminal sets commands only applicable inside tmux sessions like split horizontal, vertical and maximize
-M.terminal = function()
-	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-	map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
-	map({ "n", "v" }, "<leader>tv", "<cmd>!tmux split-window -h -l 30 <CR>", { desc = "Tmux new vertical split" })
-	map({ "n", "v" }, "<leader>tt", "<cmd>!tmux resize-pane -Z<CR><CR>", { desc = "Toggle terminal" })
+	map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Current Buffer" })
+	map("n", "<leader>x", "<cmd>q<CR>", { desc = "Close current window/pane" })
 end
 
 M.window_navigation = function()
@@ -32,6 +39,14 @@ M.window_navigation = function()
 	map({ "n", "v" }, "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move focus to the lower window" })
 	map({ "n", "v" }, "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move focus to the upper window" })
 	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
+end
+
+-- terminal sets commands only applicable inside tmux sessions like split horizontal, vertical and maximize
+M.terminal = function()
+	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+	map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
+	map({ "n", "v" }, "<leader>tv", "<cmd>!tmux split-window -h -l 30 <CR>", { desc = "Tmux new vertical split" })
+	map({ "n", "v" }, "<leader>tt", "<cmd>!tmux resize-pane -Z<CR><CR>", { desc = "Toggle terminal" })
 end
 
 M.telescope = function()
@@ -141,7 +156,26 @@ M.ai = {
 				print("Copilot enabled")
 			end
 		end
-		map("n", "<leader>ag", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+		map("n", "<leader>agx", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+	end,
+
+	copilot_chat = function()
+		map({ "n", "v" }, "<leader>age", "<cmd>CopilotChatExplain<CR>", { desc = "[A]I [G]ithub Copilot [E]xplain" })
+		map(
+			{ "n", "v" },
+			"<leader>agc",
+			"<cmd>CopilotChatToggle<CR>",
+			{ desc = "[A]I [G]ithub Copilot Toggle [C]hat Window" }
+		)
+		map({ "n", "v" }, "<leader>ago", "<cmd>CopilotChatOptimize<CR>", { desc = "[A]I [G]ithub Copilot [O]ptimize" })
+		map(
+			{ "n", "v" },
+			"<leader>agt",
+			"<cmd>CopilotChatTests<CR>",
+			{ desc = "[A]I [G]ithub Copilot Generate [T]ests" }
+		)
+		map({ "n", "v" }, "<leader>agd", "<cmd>CopilotChatDocs<CR>", { desc = "[A]I [G]ithub Copilot Generate [D]ocs" })
+		map({ "n", "v" }, "<leader>agf", "<cmd>CopilotChatFix<CR>", { desc = "[A]I [G]ithub Copilot [F]ix Code" })
 	end,
 }
 

@@ -1,17 +1,11 @@
+local opts = require("configs.ai")
 return {
-	{
-		"robitx/gp.nvim",
-		config = function()
-			require("gp").setup()
-		end,
-	},
 	{
 		"ilan-schemoul/ChatGPT.nvim",
 		branch = "fix-invalid-capture",
 		event = "VeryLazy",
 		config = function()
-			local opts = require("configs.chatgpt")
-			require("chatgpt").setup(opts)
+			require("chatgpt").setup(opts.chatgpt)
 		end,
 		dependencies = {
 			"MunifTanjim/nui.nvim",
@@ -25,6 +19,31 @@ return {
 		lazy = false,
 		config = function()
 			vim.cmd("Copilot disable")
+		end,
+	},
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "canary",
+		cmd = {
+			"CopilotChat",
+			"CopilotChatOpen",
+			"CopilotChatClose",
+			"CopilotChatToggle",
+			"CopilotChatExplain",
+			"CopilotChatTests",
+			"CopilotChatFix",
+			"CopilotChatOptimize",
+			"CopilotChatDocs",
+			"CopilotChatFixDiagnostic",
+			"CopilotChatCommit",
+			"CopilotChatCommitStaged",
+		},
+		dependencies = {
+			{ "github/copilot.vim" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		config = function()
+			require("CopilotChat").setup(opts.copilot())
 		end,
 	},
 }

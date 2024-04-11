@@ -1,4 +1,11 @@
 return {
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("lualine").setup()
+		end,
+	},
 
 	{ -- You can easily change to a different colorscheme.
 		-- Change the name of the colorscheme plugin below, and then
@@ -30,5 +37,9 @@ return {
 
 			vim.cmd.colorscheme("solarized")
 		end,
+	},
+	{
+		"xiyaowong/transparent.nvim",
+		lazy = false,
 	},
 }

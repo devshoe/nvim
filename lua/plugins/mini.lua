@@ -47,7 +47,7 @@ return {
 		require("mini.files").setup(opts.files)
 		-- require("mini.animate").setup(opts.animate)
 		require("mini.comment").setup(opts.comment)
-		require("mini.statusline").setup(opts.statusline)
+		-- require("mini.statusline").setup(opts.statusline)
 		-- require("mini.cursorword").setup(opts.cursorword)
 	end,
 }
