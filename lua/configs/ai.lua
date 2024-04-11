@@ -182,7 +182,7 @@ M.copilot = function()
 		allow_insecure = false, -- Allow insecure server connections
 
 		system_prompt = prompts.COPILOT_INSTRUCTIONS, -- System prompt to use
-		model = "gpt-4-turbo", -- GPT model to use, 'gpt-3.5-turbo' or 'gpt-4'
+		model = "gpt-4", -- GPT model to use, 'gpt-3.5-turbo' or 'gpt-4'
 		temperature = 0.1, -- GPT temperature
 
 		question_header = "## User ", -- Header to use for user questions
@@ -191,7 +191,7 @@ M.copilot = function()
 		separator = "---", -- Separator to use in chat
 
 		show_folds = true, -- Shows folds for sections in chat
-		show_help = true, -- Shows help message as virtual lines when waiting for user input
+		show_help = false, -- Shows help message as virtual lines when waiting for user input
 		auto_follow_cursor = true, -- Auto-follow cursor in chat
 		auto_insert_mode = false, -- Automatically enter insert mode when opening window and if auto follow cursor is enabled on new prompt
 		clear_chat_on_new_prompt = false, -- Clears chat on every new prompt
@@ -244,7 +244,7 @@ M.copilot = function()
 			-- Options below only apply to floating windows
 			relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
 			border = "single", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
-			width = 0.8, -- fractional width of parent
+			width = 0.5, -- fractional width of parent
 			height = 0.6, -- fractional height of parent
 			row = nil, -- row position of the window, default is centered
 			col = nil, -- column position of the window, default is centered
