@@ -4,7 +4,7 @@ return {
 		"github/copilot.vim",
 		lazy = false,
 		config = function()
-			vim.cmd("Copilot disable")
+			-- vim.cmd("Copilot disable")
 		end,
 	},
 	{

@@ -130,13 +130,19 @@ M.ai = {
 		end
 
 		map("n", "<leader>acx", toggle_copilot, { desc = "AI Github Copilot Toggle" })
-		map("i", "<C-Space>", 'copilot#Accept("\\<CR>")', { desc = "AI Github Copilot Accept" })
-		map("i", "<C-a>", "<Plug>(copilot-accept-word)", { desc = "AI Github Copilot Accept Word" })
-		map("i", "<C-s>", "<Plug>(copilot-suggest)", { desc = "AI Github Copilot Suggest" })
-		map("i", "<C-_>", "<Plug>(copilot-accept-line)", { desc = "AI Github Copilot Accept Line" })
-		map("i", "<C-q>", "<Plug>(copilot-dismiss)", { desc = "AI Github Copilot Dismiss" })
-	end,
+		map("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
+			desc = "AI Github Copilot Accept",
+			expr = true,
+			replace_keycodes = false,
+		})
+		vim.g.copilot_no_tab_map = true
 
+		map("i", "<C-q>", "<Plug>(copilot-dismiss)", { desc = "AI Github Copilot Dismiss" })
+		map("i", "<C-;>", "<Plug>(copilot-accept-word)", { desc = "AI Github Copilot Accept Word" })
+		map("i", "<C-]>", "<Plug>(copilot-accept-line)", { desc = "AI Github Copilot Accept Line" })
+		map("i", "<C-p>", "<Plug>(copilot-suggest)", { desc = "AI Github Copilot Suggest" })
+		map("i", "<C-.>", "<Plug>(copilot-suggest-line)", { desc = "AI Github Copilot Suggest Line" })
+	end,
 	copilot_chat = function()
 		map({ "n", "v" }, "<leader>ace", "<cmd>CopilotChatExplain<CR>", { desc = "[A]I [C]opilot [E]xplain" })
 		map({ "n", "v" }, "<leader>acc", "<cmd>CopilotChatToggle<CR>", { desc = "[A]I [C]opilot Toggle [C]hat Window" })
