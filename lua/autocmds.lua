@@ -15,7 +15,8 @@ local function cur_filename()
 	cwd = filename[#filename]
 	return cwd
 end
-vim.api.nvim_create_autocmd("BufEnter", {
+
+vim.api.nvim_create_autocmd("BufNew", {
 	pattern = "copilot-chat",
 	callback = function()
 		local curtime = os.date("%Y%m%d%H%M%S")
@@ -24,7 +25,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.api.nvim_buf_set_keymap(
 			0,
 			"n",
-			"<C-l>",
+			"<C-L>",
 			":CopilotChatSave " .. cfile .. "_" .. curtime .. "<CR>:CopilotChatReset<CR>",
 			{ noremap = true, silent = true }
 		)

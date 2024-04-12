@@ -114,38 +114,6 @@ M.sessions = function()
 end
 
 M.ai = {
-	chatgpt = function()
-		-- Sessions
-		--AI Tools
-		map("n", "<leader>acc", "<cmd>ChatGPT<CR>", { desc = "AI ChatGPT Full Chat" })
-		map(
-			{ "n", "v" },
-			"<leader>aci",
-			"<cmd>ChatGPTEditWithInstruction<CR>",
-			{ desc = "ChatGPT Edit With Instructions" }
-		)
-		map(
-			{ "n", "v" },
-			"<leader>acg",
-			"<cmd>ChatGPTRun grammar_correction<CR>",
-			{ desc = "ChatGPT: Correct Grammar" }
-		)
-		-- map({"n","v"},"<leader>act","<cmd>ChatGPTRun translate<CR>",{desc = "ChatGPT"})
-		map({ "n", "v" }, "<leader>ack", "<cmd>ChatGPTRun keywords<CR>", { desc = "ChatGPT: Extract Keywords" })
-		map({ "n", "v" }, "<leader>K", "<cmd>ChatGPTRun docstring<CR>", { desc = "ChatGPT: Generate Docs" })
-		map({ "n", "v" }, "<leader>act", "<cmd>ChatGPTRun add_tests<CR>", { desc = "ChatGPT: Add Tests" })
-		map({ "n", "v" }, "<leader>aco", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "ChatGPT: Optimize Code" })
-		map({ "n", "v" }, "<leader>acs", "<cmd>ChatGPTRun summarize<CR>", { desc = "ChatGPT: Summarize" })
-		map({ "n", "v" }, "<leader>acf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "ChatGPT: Fix Bugs" })
-		map({ "n", "v" }, "<leader>ace", "<cmd>ChatGPTRun explain_code<CR>", { desc = "ChatGPT: Explain" })
-		map({ "n", "v" }, "<leader>acx", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "ChatGPT: Roxygen Edit" })
-		map(
-			{ "n", "v" },
-			"<leader>aca",
-			"<cmd>ChatGPTRun code_readability_analysis<CR>",
-			{ desc = "ChatGPT: Code Readability Analysis" }
-		)
-	end,
 
 	copilot = function()
 		local toggle_copilot = function()
@@ -160,26 +128,22 @@ M.ai = {
 				print("Copilot enabled")
 			end
 		end
-		map("n", "<leader>agx", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+
+		map("n", "<leader>acx", toggle_copilot, { desc = "AI Github Copilot Toggle" })
+		map("i", "<C-Space>", 'copilot#Accept("\\<CR>")', { desc = "AI Github Copilot Accept" })
+		map("i", "<C-a>", "<Plug>(copilot-accept-word)", { desc = "AI Github Copilot Accept Word" })
+		map("i", "<C-s>", "<Plug>(copilot-suggest)", { desc = "AI Github Copilot Suggest" })
+		map("i", "<C-_>", "<Plug>(copilot-accept-line)", { desc = "AI Github Copilot Accept Line" })
+		map("i", "<C-q>", "<Plug>(copilot-dismiss)", { desc = "AI Github Copilot Dismiss" })
 	end,
 
 	copilot_chat = function()
-		map({ "n", "v" }, "<leader>age", "<cmd>CopilotChatExplain<CR>", { desc = "[A]I [G]ithub Copilot [E]xplain" })
-		map(
-			{ "n", "v" },
-			"<leader>agc",
-			"<cmd>CopilotChatToggle<CR>",
-			{ desc = "[A]I [G]ithub Copilot Toggle [C]hat Window" }
-		)
-		map({ "n", "v" }, "<leader>ago", "<cmd>CopilotChatOptimize<CR>", { desc = "[A]I [G]ithub Copilot [O]ptimize" })
-		map(
-			{ "n", "v" },
-			"<leader>agt",
-			"<cmd>CopilotChatTests<CR>",
-			{ desc = "[A]I [G]ithub Copilot Generate [T]ests" }
-		)
-		map({ "n", "v" }, "<leader>agd", "<cmd>CopilotChatDocs<CR>", { desc = "[A]I [G]ithub Copilot Generate [D]ocs" })
-		map({ "n", "v" }, "<leader>agf", "<cmd>CopilotChatFix<CR>", { desc = "[A]I [G]ithub Copilot [F]ix Code" })
+		map({ "n", "v" }, "<leader>ace", "<cmd>CopilotChatExplain<CR>", { desc = "[A]I [C]opilot [E]xplain" })
+		map({ "n", "v" }, "<leader>acc", "<cmd>CopilotChatToggle<CR>", { desc = "[A]I [C]opilot Toggle [C]hat Window" })
+		map({ "n", "v" }, "<leader>aco", "<cmd>CopilotChatOptimize<CR>", { desc = "[A]I [C]opilot [O]ptimize" })
+		map({ "n", "v" }, "<leader>act", "<cmd>CopilotChatTests<CR>", { desc = "[A]I [C]opilot Generate [T]ests" })
+		map({ "n", "v" }, "<leader>acd", "<cmd>CopilotChatDocs<CR>", { desc = "[A]I [C]opilot Generate [D]ocs" })
+		map({ "n", "v" }, "<leader>acf", "<cmd>CopilotChatFix<CR>", { desc = "[A]I [C]opilot [F]ix Code" })
 	end,
 }
 
@@ -196,7 +160,7 @@ M.cmp = function()
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<C-x>"] = cmp.mapping.close(),
-		["<C-Space>"] = cmp.mapping.complete({}),
+		-- ["<C-Space>"] = cmp.mapping.complete({}),
 		["<C-l>"] = cmp.mapping(function()
 			if luasnip.expand_or_locally_jumpable() then
 				luasnip.expand_or_jump()

@@ -1,20 +1,6 @@
 local opts = require("configs.ai")
 return {
 	{
-		"ilan-schemoul/ChatGPT.nvim",
-		branch = "fix-invalid-capture",
-		event = "VeryLazy",
-		config = function()
-			require("chatgpt").setup(opts.chatgpt)
-		end,
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"folke/trouble.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-	},
-	{
 		"github/copilot.vim",
 		lazy = false,
 		config = function()
