@@ -190,7 +190,7 @@ M.copilot = function()
 		error_header = "## Error ", -- Header to use for errors
 		separator = "---", -- Separator to use in chat
 
-		show_folds = true, -- Shows folds for sections in chat
+		-- show_folds = true, -- Shows folds for sections in chat
 		show_help = false, -- Shows help message as virtual lines when waiting for user input
 		auto_follow_cursor = true, -- Auto-follow cursor in chat
 		auto_insert_mode = false, -- Automatically enter insert mode when opening window and if auto follow cursor is enabled on new prompt
@@ -244,7 +244,7 @@ M.copilot = function()
 			-- Options below only apply to floating windows
 			relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
 			border = "single", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
-			width = 0.5, -- fractional width of parent
+			width = 0.25, -- fractional width of parent
 			height = 0.6, -- fractional height of parent
 			row = nil, -- row position of the window, default is centered
 			col = nil, -- column position of the window, default is centered

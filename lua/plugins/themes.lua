@@ -3,7 +3,8 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("lualine").setup()
+			local opts = require("configs.themes").lualine
+			require("lualine").setup(opts)
 		end,
 	},
 

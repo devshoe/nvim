@@ -77,6 +77,10 @@ M.telescope = function()
 	map("n", "<leader>sn", function()
 		builtin.find_files({ cwd = vim.fn.stdpath("config") })
 	end, { desc = "[F]ind [N]eovim files" })
+
+	map("n", "<leader>agg", function()
+		builtin.find_files({ cwd = vim.fn.stdpath("data") .. "/copilotchat_history" })
+	end, { desc = "[F]ind [G]ithub Copilot Chat" })
 end
 
 M.dadbod = function()
