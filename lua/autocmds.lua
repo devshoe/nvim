@@ -16,21 +16,12 @@ local function cur_filename()
 	return cwd
 end
 
-vim.api.nvim_create_autocmd("BufNew", {
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
 	pattern = "copilot-chat",
 	callback = function()
-		local curtime = os.date("%Y%m%d%H%M%S")
-		local cfile = cur_filename()
-		local filename = cfile .. "_" .. curtime
-		-- we want to only get the last part of the path
-		vim.api.nvim_buf_set_keymap(
-			0,
-			"n",
-			"<C-L>",
-			":CopilotChatSave " .. filename .. "<CR>:CopilotChatReset<CR>",
-			{ noremap = true, silent = true }
-		)
-		vim.api.nvim_buf_set_keymap(0, "n", "q", ":CopilotChatSave " .. filename .. "<CR>:CopilotChatClose<CR>")
+		local filename = cur_filename() .. "_" .. os.date("%Y%m%d%H%M%S")
+
+		vim.cmd(":CopilotChatSave" .. filename .. "<CR>:CopilotChatReset<CR>")
 
 		print("init chat bindings")
 	end,

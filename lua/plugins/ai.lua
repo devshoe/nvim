@@ -1,10 +1,20 @@
 local opts = require("configs.ai")
 return {
 	{
-		"github/copilot.vim",
-		lazy = false,
+		"zbirenbaum/copilot-cmp",
 		config = function()
-			-- vim.cmd("Copilot disable")
+			require("copilot_cmp").setup()
+		end,
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
 		end,
 	},
 	{
@@ -25,7 +35,7 @@ return {
 			"CopilotChatCommitStaged",
 		},
 		dependencies = {
-			{ "github/copilot.vim" }, -- or github/copilot.vim
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		config = function()

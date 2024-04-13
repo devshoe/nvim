@@ -6,7 +6,7 @@ vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.cmdheight = 0
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
+vim.opt.showmode = true
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -23,6 +23,8 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+vim.opt.linebreak = true
+vim.opt.wrap = false
 -- Keep signcolumn on by default
 -- vim.opt.signcolumn = "yes"
 vim.opt.numberwidth = 2

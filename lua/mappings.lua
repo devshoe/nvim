@@ -74,7 +74,7 @@ M.telescope = function()
 	map("n", "<leader>fb", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
 
 	-- Shortcut for searching your Neovim configuration files
-	map("n", "<leader>sn", function()
+	map("n", "<leader>fn", function()
 		builtin.find_files({ cwd = vim.fn.stdpath("config") })
 	end, { desc = "[F]ind [N]eovim files" })
 
@@ -91,9 +91,10 @@ M.dadbod = function()
 end
 
 M.mini = {
+
 	files = function()
 		local open_minifiles = function()
-			require("mini.files").open()
+			require("mini.files").open(vim.api.nvim_buf_get_name(0))
 		end
 		map({ "n", "v" }, "<C-n>", open_minifiles, { desc = "Open file explorer" })
 	end,
@@ -115,34 +116,6 @@ end
 
 M.ai = {
 
-	copilot = function()
-		local toggle_copilot = function()
-			local status = vim.fn.execute("Copilot status")
-			if string.find(status, "Ready") then
-				-- If Copilot is ready, disable it
-				vim.cmd("Copilot disable")
-				print("Copilot disabled")
-			else
-				-- If Copilot is not ready, enable it
-				vim.cmd("Copilot enable")
-				print("Copilot enabled")
-			end
-		end
-
-		map("n", "<leader>acx", toggle_copilot, { desc = "AI Github Copilot Toggle" })
-		map("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
-			desc = "AI Github Copilot Accept",
-			expr = true,
-			replace_keycodes = false,
-		})
-		vim.g.copilot_no_tab_map = true
-
-		map("i", "<C-q>", "<Plug>(copilot-dismiss)", { desc = "AI Github Copilot Dismiss" })
-		map("i", "<C-;>", "<Plug>(copilot-accept-word)", { desc = "AI Github Copilot Accept Word" })
-		map("i", "<C-]>", "<Plug>(copilot-accept-line)", { desc = "AI Github Copilot Accept Line" })
-		map("i", "<C-p>", "<Plug>(copilot-suggest)", { desc = "AI Github Copilot Suggest" })
-		map("i", "<C-.>", "<Plug>(copilot-suggest-line)", { desc = "AI Github Copilot Suggest Line" })
-	end,
 	copilot_chat = function()
 		map({ "n", "v" }, "<leader>ace", "<cmd>CopilotChatExplain<CR>", { desc = "[A]I [C]opilot [E]xplain" })
 		map({ "n", "v" }, "<leader>acc", "<cmd>CopilotChatToggle<CR>", { desc = "[A]I [C]opilot Toggle [C]hat Window" })
@@ -157,16 +130,36 @@ M.ai = {
 --
 
 M.cmp = function()
+	local has_words_before = function()
+		if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+			return false
+		end
+		local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+		return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+	end
 	local cmp = require("cmp")
 	local luasnip = require("luasnip")
 	return {
-		["<Tab>"] = cmp.mapping.select_next_item(),
-		["<S-Tab>"] = cmp.mapping.select_prev_item(),
+		["<Tab>"] = vim.schedule_wrap(function(fallback)
+			if cmp.visible() and has_words_before() then
+				cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+			else
+				fallback()
+			end
+		end),
+
+		["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+			if cmp.visible() and has_words_before() then
+				cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+			else
+				fallback()
+			end
+		end),
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<C-x>"] = cmp.mapping.close(),
-		-- ["<C-Space>"] = cmp.mapping.complete({}),
+		["<C-a>"] = cmp.mapping.complete(),
 		["<C-l>"] = cmp.mapping(function()
 			if luasnip.expand_or_locally_jumpable() then
 				luasnip.expand_or_jump()
@@ -185,15 +178,17 @@ end
 
 -- used internally
 M.lsp = function(event)
+	---@diagnostic disable-next-line: redefined-local
 	local map = function(keys, func, desc)
 		map("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 	end
-	map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-	map("<leader>fsd", require("telescope.builtin").lsp_document_symbols, "[F]ind [S]ymbols in [D]ocument]")
-	map("<leader>fsw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
+	local telescope = require("telescope.builtin")
+	map("gd", telescope.lsp_definitions, "[G]oto [D]efinition")
+	map("gr", telescope.lsp_references, "[G]oto [R]eferences")
+	map("gI", telescope.lsp_implementations, "[G]oto [I]mplementation")
+	map("<leader>D", telescope.lsp_type_definitions, "Type [D]efinition")
+	map("<leader>fsb", telescope.lsp_document_symbols, "[F]ind [S]ymbols in [B]uffer")
+	map("<leader>fsw", telescope.lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
 	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename Variable")
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("<leader>cd", vim.diagnostic.goto_prev, "[C]ode Diagnostic [D]own")
