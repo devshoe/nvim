@@ -31,8 +31,6 @@ M.page_navigation = function()
 end
 
 M.buffer_navigation = function()
-	map("n", "<leader><Tab>", "<cmd>bn<CR>", { desc = "Next buffer" })
-	map("n", "<leader><S-Tab>", "<cmd>bp<CR>", { desc = "Prev buffer" })
 	map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Current Buffer" })
 	map("n", "<leader>x", "<cmd>q<CR>", { desc = "Close current window/pane" })
 end
