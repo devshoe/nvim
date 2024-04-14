@@ -44,6 +44,7 @@ M.cmp = function()
 				luasnip.lsp_expand(args.body)
 			end,
 		},
+
 		completion = {
 			keyword_length = 0,
 

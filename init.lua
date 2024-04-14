@@ -1,4 +1,5 @@
 require("lazy-bootstrap")
+
 require("options")
 -- [[ Configure and install plugins ]]
 

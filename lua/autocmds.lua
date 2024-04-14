@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
 	callback = function()
 		local filename = cur_filename() .. "_" .. os.date("%Y%m%d%H%M%S")
 
-		vim.cmd(":CopilotChatSave" .. filename .. "<CR>:CopilotChatReset<CR>")
+		vim.cmd(":CopilotChatSave " .. filename) -- .. "<CR>:CopilotChatReset<CR>"
 
 		print("init chat bindings")
 	end,

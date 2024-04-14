@@ -2,6 +2,14 @@ return {
 	ensure_installed = { "go", "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
 	-- Autoinstall languages that are not installed
 	auto_install = true,
+	textobjects = {
+		move = {
+			enable = true,
+			set_jumps = false,
+			goto_next_start = { ["]]"] = "@function.outer" },
+			goto_previous_start = { ["[["] = "@function.outer" },
+		},
+	},
 	highlight = {
 		enable = true,
 		-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.

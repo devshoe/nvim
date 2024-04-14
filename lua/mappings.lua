@@ -10,6 +10,10 @@ M.page_navigation = function()
 	map("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 	map("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
+	map({ "n", "v" }, "[d", vim.diagnostic.goto_prev, { desc = "[C]ode Diagnostic [D]own" })
+	map({ "n", "v" }, "]d", vim.diagnostic.goto_next, { desc = "[C]ode Diagnostic [U]p" })
+
+	--goto next function
 	map("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 	-- okay, so y,s,c,x,d are the commands that delete or copy to clipboard
@@ -20,8 +24,8 @@ M.page_navigation = function()
 	-- open question: do we want deletion yank in normal mode?
 	map({ "v" }, "d", '"dd', { desc = "Delete without yanking" })
 	map({ "v", "n" }, "c", '"cc', { desc = "Delete and Enter Insert without yanking" })
-	map({ "v", "n" }, "s", '"ss', { desc = "Delete and Enter Insert without yanking" })
-	map({ "v", "n" }, "S", '"sS', { desc = "Delete and Enter Insert without yanking" })
+	map({ "n" }, "s", '"ss', { desc = "Delete and Enter Insert without yanking" })
+	map({ "n" }, "S", '"sS', { desc = "Delete and Enter Insert without yanking" })
 	map({ "n" }, "x", '"_x', { desc = "Delete Character Under Cursor" })
 	map("n", "<S-Enter>", ":normal! o<CR>", { desc = "Insert new line" })
 end
@@ -78,9 +82,9 @@ M.telescope = function()
 		builtin.find_files({ cwd = vim.fn.stdpath("config") })
 	end, { desc = "[F]ind [N]eovim files" })
 
-	map("n", "<leader>agg", function()
+	map("n", "<leader>acs", function()
 		builtin.find_files({ cwd = vim.fn.stdpath("data") .. "/copilotchat_history" })
-	end, { desc = "[F]ind [G]ithub Copilot Chat" })
+	end, { desc = "[S]earch [C]opilot Chat" })
 end
 
 M.dadbod = function()
@@ -88,6 +92,20 @@ M.dadbod = function()
 	map("n", "<leader>dba", "<cmd>DBUIAddConnection<CR>", { desc = "Add DB Connection" })
 	map("n", "<leader>dbf", "<cmd>DBUIFindBuffer<CR>", { desc = "Find DB Open Buffers" })
 	map("n", "<leader>dbx", "<cmd>DBUIClose<CR>", { desc = "Close DB Buffers" })
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "sql",
+		callback = function()
+			---@diagnostic disable-next-line: redefined-local
+			local function map(mode, lhs, rhs, opts)
+				local bufnr = vim.api.nvim_get_current_buf()
+				vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+			end
+
+			map("n", "<leader>dbr", "<Plug>(DBUI_ExecuteQuery)", { desc = "Execute current file" })
+			map("v", "<leader>dbr", "<Plug>(DBUI_ExecuteQuery)", { desc = "Execute current selection" })
+			map("n", "<leader>dbs", "<Plug>(DBUI_SaveQuery)", { desc = "Save Current Query" })
+		end,
+	})
 end
 
 M.mini = {
@@ -137,6 +155,7 @@ M.cmp = function()
 		local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 		return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 	end
+
 	local cmp = require("cmp")
 	local luasnip = require("luasnip")
 	return {
@@ -191,8 +210,6 @@ M.lsp = function(event)
 	map("<leader>fsw", telescope.lsp_dynamic_workspace_symbols, "[F]ind [S]ymbols in [W]orkspace")
 	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename Variable")
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-	map("<leader>cd", vim.diagnostic.goto_prev, "[C]ode Diagnostic [D]own")
-	map("<leader>cu", vim.diagnostic.goto_next, "[C]ode Diagnostic [U]p")
 	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
 	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
