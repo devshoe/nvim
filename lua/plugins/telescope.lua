@@ -28,6 +28,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		require("telescope").setup(opts.telescope)
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
+		pcall(require("telescope").load_extension, "harpoon")
 	end,
 	-- See `:help telescope.builtin`
 }

@@ -3,12 +3,12 @@ return {
 	-- Autoinstall languages that are not installed
 	auto_install = true,
 	textobjects = {
-		move = {
-			enable = true,
-			set_jumps = false,
-			goto_next_start = { ["]]"] = "@function.outer" },
-			goto_previous_start = { ["[["] = "@function.outer" },
-		},
+		-- move = {
+		-- 	enable = true,
+		-- 	set_jumps = false,
+		-- 	goto_next_start = { ["]]"] = "@function.outer" },
+		-- 	goto_previous_start = { ["[["] = "@function.outer" },
+		-- },
 	},
 	highlight = {
 		enable = true,

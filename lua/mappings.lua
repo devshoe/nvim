@@ -33,6 +33,8 @@ end
 M.buffer_navigation = function()
 	map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Current Buffer" })
 	map("n", "<leader>x", "<cmd>q<CR>", { desc = "Close current window/pane" })
+	map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
+	map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
 end
 
 M.window_navigation = function()
@@ -43,6 +45,14 @@ M.window_navigation = function()
 	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
 end
 
+M.harpoon = function()
+	map("n", "<leader>hh", function()
+		require("harpoon.ui").toggle_quick_menu()
+	end, { desc = "Toggle Harpoon" })
+	map("n", "<leader>ha", function()
+		require("harpoon.mark").add_file()
+	end, { desc = "Add Harpoon Mark" })
+end
 -- terminal sets commands only applicable inside tmux sessions like split horizontal, vertical and maximize
 M.terminal = function()
 	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
@@ -53,7 +63,7 @@ end
 
 M.telescope = function()
 	local builtin = require("telescope.builtin")
-	map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+	map("n", "<leader>fK", builtin.help_tags, { desc = "[F]ind [H]elp" })
 	map("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
 	map("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 	map("n", "<leader>fx", builtin.builtin, { desc = "[F]ind Select Telescope" })
@@ -64,6 +74,8 @@ M.telescope = function()
 	map("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 	map("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 	map("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind [T]heme" })
+	map("n", "<leader>fm", builtin.marks, { desc = "[F]ind [M]arks" })
+	map("n", "<leader>fh", ":Telescope harpoon marks", { desc = "[F]ind [H]arpoon Marks" })
 	-- for visual selection
 
 	map(
@@ -73,7 +85,7 @@ M.telescope = function()
 		{ desc = "[F]ind selected [W]ords" }
 	)
 	-- Slightly advanced example of overriding default behavior and theme
-	map("n", "<leader>fb", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
+	map("n", "<leader>fk", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
 
 	-- Shortcut for searching your Neovim configuration files
 	map("n", "<leader>fn", function()
@@ -127,7 +139,12 @@ M.mini = {
 
 M.sessions = function()
 	map("n", "<leader>sf", "<cmd>SearchSession<CR>", { desc = "Session Find" })
-	map("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Session Save" })
+	map("n", "<leader>ss", function()
+		vim.cmd("wa")
+		vim.cmd("SessionSave")
+	end, { desc = "Session Save" })
+	map("n", "<leader>sd", "<cmd>SessionDelete<CR>", { desc = "Session Delete" })
+	map("n", "<leader>sr", "<cmd>SessionRestore<CR>", { desc = "Session Restore" })
 end
 
 M.ai = {
@@ -172,6 +189,7 @@ M.cmp = function()
 				fallback()
 			end
 		end),
+
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
@@ -210,6 +228,9 @@ M.lsp = function(event)
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
 	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
+	map("<leader>cl", function()
+		vim.cmd("LspRestart")
+	end, "[C]ode [L]SP Restart")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
 	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 end

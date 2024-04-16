@@ -39,6 +39,8 @@ M.lsp_config = function()
 				},
 			},
 		},
+
+		bufls = {},
 	}
 
 	require("mason").setup()

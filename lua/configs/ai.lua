@@ -66,7 +66,7 @@ M.copilot = function()
 
 		-- default window options
 		window = {
-			layout = "vertical", -- 'vertical', 'horizontal', 'float'
+			layout = "horizontal", -- 'vertical', 'horizontal', 'float'
 			-- Options below only apply to floating windows
 			relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
 			border = "single", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
