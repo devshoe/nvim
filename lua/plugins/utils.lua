@@ -38,7 +38,7 @@ return {
 		"anuvyklack/windows.nvim",
 		dependencies = {
 			"anuvyklack/middleclass",
-			"anuvyklack/animation.nvim",
+			-- "anuvyklack/animation.nvim",
 		},
 		config = function()
 			vim.o.winwidth = 10

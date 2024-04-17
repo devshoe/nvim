@@ -49,7 +49,7 @@ M.cmp = function()
 			keyword_length = 0,
 
 			--keyword_pattern = "",
-			completeopt = "menu,menuone,noinsert,noselect",
+			-- completeopt = "menu,menuone,noinsert,noselect",
 		},
 		mapping = require("mappings").cmp(),
 		sources = {

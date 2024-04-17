@@ -34,6 +34,7 @@ M.buffer_navigation = function()
 	map("n", "<leader>x", "<cmd>q<CR>", { desc = "Close current window/pane" })
 	map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
 	map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
+	-- map("n", "}", "]m", { desc = "Next {" })
 end
 
 M.window_navigation = function()
