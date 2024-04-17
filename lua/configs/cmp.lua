@@ -48,6 +48,7 @@ M.cmp = function()
 		completion = {
 			keyword_length = 0,
 
+			--keyword_pattern = "",
 			completeopt = "menu,menuone,noinsert,noselect",
 		},
 		mapping = require("mappings").cmp(),

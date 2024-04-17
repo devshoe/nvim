@@ -27,7 +27,6 @@ M.page_navigation = function()
 	map({ "n" }, "s", '"ss', { desc = "Delete and Enter Insert without yanking" })
 	map({ "n" }, "S", '"sS', { desc = "Delete and Enter Insert without yanking" })
 	map({ "n" }, "x", '"_x', { desc = "Delete Character Under Cursor" })
-	map("n", "<S-Enter>", ":normal! o<CR>", { desc = "Insert new line" })
 end
 
 M.buffer_navigation = function()
@@ -43,6 +42,10 @@ M.window_navigation = function()
 	map({ "n", "v" }, "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move focus to the lower window" })
 	map({ "n", "v" }, "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move focus to the upper window" })
 	map({ "n", "v" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { desc = "Move focus to the previous window" })
+	map("n", "<C-w>z", "<cmd>WindowsMaximize<cr>", { desc = "Maximize current window" })
+	map("n", "<C-w>_", "<cmd>WindowsMaximizeVertically<cr>", { desc = "Maximize current window vertically" })
+	map("n", "<C-w>|", "<cmd>WindowsMaximizeHorizontally<cr>", { desc = "Maximize current window horizontally" })
+	map("n", "<C-w>=", "<cmd>WindowsEqualize<cr>", { desc = "Equalize window sizes" })
 end
 
 M.harpoon = function()
@@ -76,8 +79,9 @@ M.telescope = function()
 	map("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind [T]heme" })
 	map("n", "<leader>fm", builtin.marks, { desc = "[F]ind [M]arks" })
 	map("n", "<leader>fh", ":Telescope harpoon marks", { desc = "[F]ind [H]arpoon Marks" })
+	map("n", "<leader>fb", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
 	-- for visual selection
-
+	-- Find selected word under cursor
 	map(
 		"v",
 		"<leader>fw",
@@ -85,7 +89,6 @@ M.telescope = function()
 		{ desc = "[F]ind selected [W]ords" }
 	)
 	-- Slightly advanced example of overriding default behavior and theme
-	map("n", "<leader>fk", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in current [B]uffer" })
 
 	-- Shortcut for searching your Neovim configuration files
 	map("n", "<leader>fn", function()
@@ -174,27 +177,26 @@ M.cmp = function()
 	local cmp = require("cmp")
 	local luasnip = require("luasnip")
 	return {
-		["<Tab>"] = vim.schedule_wrap(function(fallback)
-			if cmp.visible() and has_words_before() then
+		["<C-n>"] = function()
+			if cmp.visible() then
 				cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 			else
-				fallback()
+				cmp.mapping.complete()
 			end
-		end),
+		end,
 
-		["<S-Tab>"] = vim.schedule_wrap(function(fallback)
-			if cmp.visible() and has_words_before() then
+		["<C-p>"] = function()
+			if cmp.visible() then
 				cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
 			else
-				fallback()
+				cmp.mapping.complete()
 			end
-		end),
+		end,
 
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<C-x>"] = cmp.mapping.close(),
-		["<C-a>"] = cmp.mapping.complete(),
 		["<C-l>"] = cmp.mapping(function()
 			if luasnip.expand_or_locally_jumpable() then
 				luasnip.expand_or_jump()
@@ -228,6 +230,9 @@ M.lsp = function(event)
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("<leader>ce", vim.diagnostic.open_float, "[C]ode Diagnostic [E]rror messages")
 	map("<leader>cq", vim.diagnostic.setloclist, "[C]ode Diagnostic [Q]uickfix list")
+	map("<leader>co", function()
+		vim.cmd("Outline")
+	end, "[C]ode Symbols [O]utline")
 	map("<leader>cl", function()
 		vim.cmd("LspRestart")
 	end, "[C]ode [L]SP Restart")

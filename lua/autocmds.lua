@@ -31,6 +31,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", ":w<cr>:luafile %<CR>", { desc = "Run lua file" })
 	end,
 })
+
 -- -- -- Import necessary modules
 -- local telescope = require("telescope")
 -- local pickers = require("telescope.pickers")

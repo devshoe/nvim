@@ -8,29 +8,71 @@ return {
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
-		init = function()
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
-
-			-- You can configure highlights by doing something like:
-			vim.cmd.hi("Comment gui=none")
+	{
+		"tokyonight.nvim",
+		priority = 1000,
+		opts = function()
+			return {
+				style = "moon",
+				-- transparent = true,
+				-- styles = {
+				--   sidebars = "transparent",
+				--   floats = "transparent",
+				-- },
+				sidebars = {
+					"qf",
+					"vista_kind",
+					-- "terminal",
+					"spectre_panel",
+					"startuptime",
+					"Outline",
+				},
+				on_colors = function(c)
+					-- local hsluv = require("tokyonight.hsluv")
+					-- local function randomColor(color)
+					--   if color ~= "NONE" then
+					--     local hsl = hsluv.hex_to_hsluv(color)
+					--     hsl[1] = math.random(0, 360)
+					--     return hsluv.hsluv_to_hex(hsl)
+					--   end
+					--   return color
+					-- end
+					-- local function set(colors)
+					--   if type(colors) == "table" then
+					--     for k, v in pairs(colors) do
+					--       if type(v) == "string" then
+					--         colors[k] = randomColor(v)
+					--       elseif type(v) == "table" then
+					--         set(v)
+					--       end
+					--     end
+					--   end
+					-- end
+					-- set(c)
+				end,
+				on_highlights = function(hl, c)
+					hl.CursorLineNr = { fg = c.orange, bold = true }
+					-- hl.LineNr = { fg = c.orange, bold = true }
+					hl.LineNrAbove = { fg = c.fg_gutter }
+					hl.LineNrBelow = { fg = c.fg_gutter }
+					local prompt = "#2d3149"
+					hl.TelescopeNormal = { bg = c.bg_dark, fg = c.fg_dark }
+					hl.TelescopeBorder = { bg = c.bg_dark, fg = c.bg_dark }
+					hl.TelescopePromptNormal = { bg = prompt }
+					hl.TelescopePromptBorder = { bg = prompt, fg = prompt }
+					hl.TelescopePromptTitle = { bg = c.fg_gutter, fg = c.orange }
+					hl.TelescopePreviewTitle = { bg = c.bg_dark, fg = c.bg_dark }
+					hl.TelescopeResultsTitle = { bg = c.bg_dark, fg = c.bg_dark }
+				end,
+			}
 		end,
 	},
 	{
 		"maxmx03/solarized.nvim",
 		lazy = false,
-		priority = 1000,
+		priority = 900,
 		config = function()
-			if tonumber(os.date("%H")) > 17 then
+			if tonumber(os.date("%H")) >= 17 then
 				vim.o.background = "dark"
 			else
 				vim.o.background = "light" -- or 'light'

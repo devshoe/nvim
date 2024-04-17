@@ -62,15 +62,15 @@ vim.opt.hlsearch = true
 
 vim.g.tmux_navigator_save_on_switch = 2
 
-local set_winsize = function()
-	print("Setting win size: total height - " .. vim.o.lines .. " total width - " .. vim.o.columns)
-	vim.opt.winheight = math.floor(vim.o.lines * 0.3)
-	vim.opt.winwidth = math.floor(vim.o.columns * 0.3)
-end
-
-vim.api.nvim_create_autocmd("BufCreate", {
-	pattern = "*",
-	callback = function()
-		set_winsize()
-	end,
-})
+-- local set_winsize = function()
+-- 	print("Setting win size: total height - " .. vim.o.lines .. " total width - " .. vim.o.columns)
+-- 	vim.opt.winheight = math.floor(vim.o.lines * 0.3)
+-- 	vim.opt.winwidth = math.floor(vim.o.columns * 0.3)
+-- end
+--
+-- vim.api.nvim_create_autocmd("BufCreate", {
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		set_winsize()
+-- 	end,
+-- })
