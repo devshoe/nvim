@@ -8,7 +8,6 @@ M.cmp = function()
 	local lspkind = require("lspkind")
 
 	luasnip.config.setup(M.luasnip)
-
 	cmp.setup({
 		experimental = {
 			ghost_text = true,
@@ -16,8 +15,8 @@ M.cmp = function()
 		sorting = {
 			priority_weight = 10,
 			comparators = {
-				require("copilot_cmp.comparators").prioritize,
 
+				-- require("cmp_copilot.comparators").prioritize,
 				-- Below is the default comparitor list and order for nvim-cmp
 				cmp.config.compare.offset,
 				-- cmp.config.compare.scopes, --this is commented in nvim-cmp too
@@ -46,18 +45,18 @@ M.cmp = function()
 		},
 
 		completion = {
-			keyword_length = 0,
+			-- keyword_length = 0,
 
-			--keyword_pattern = "",
-			-- completeopt = "menu,menuone,noinsert,noselect",
+			-- keyword_pattern = " ",
+			completeopt = "menu,menuone,noinsert,noselect",
 		},
 		mapping = require("mappings").cmp(),
 		sources = {
-			{ name = "copilot" },
-			{ name = "nvim_lsp" },
-			{ name = "luasnip" },
-			{ name = "path" },
-			{ name = "vim-dadbod-completion" },
+			{ name = "copilot", group_index = 2 },
+			{ name = "nvim_lsp", group_index = 2 },
+			{ name = "luasnip", group_index = 2 },
+			{ name = "path", group_index = 2 },
+			{ name = "vim-dadbod-completion", group_index = 2 },
 		},
 	})
 end

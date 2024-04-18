@@ -26,6 +26,7 @@ vim.opt.smartcase = true
 vim.opt.linebreak = true
 vim.opt.wrap = false
 -- Keep signcolumn on by default
+
 -- vim.opt.signcolumn = "yes"
 vim.opt.numberwidth = 2
 -- Decrease update time

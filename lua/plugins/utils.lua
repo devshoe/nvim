@@ -5,6 +5,17 @@ return {
 			-- Example mapping to toggle outline
 			require("outline").setup({
 				-- Your setup opts here (leave empty to use defaults)
+				--
+				outline_window = {
+					auto_jump = true,
+					width = 20,
+					show_numbers = true,
+				},
+
+				keymaps = {
+					up_and_jump = "<C-p>",
+					down_and_jump = "<C-n>",
+				},
 			})
 		end,
 	},
@@ -44,7 +55,11 @@ return {
 			vim.o.winwidth = 10
 			vim.o.winminwidth = 10
 			vim.o.equalalways = false
-			require("windows").setup()
+			require("windows").setup({
+				ignore = {
+					buftype = { "quickfix", "nofile" },
+				},
+			})
 		end,
 	},
 	{
