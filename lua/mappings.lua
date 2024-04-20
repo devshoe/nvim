@@ -60,9 +60,28 @@ end
 -- terminal sets commands only applicable inside tmux sessions like split horizontal, vertical and maximize
 M.terminal = function()
 	map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-	map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
-	map({ "n", "v" }, "<leader>tv", "<cmd>!tmux split-window -h -l 30 <CR>", { desc = "Tmux new vertical split" })
-	map({ "n", "v" }, "<leader>tt", "<cmd>!tmux resize-pane -Z<CR><CR>", { desc = "Toggle terminal" })
+
+	map(
+		{ "n", "v" },
+		"<leader>ts",
+		'<Cmd>exe v:count1 . "ToggleTerm direction=horizontal"<CR>',
+		{ desc = "Toggle Terminals" }
+	)
+	map(
+		{ "n", "v" },
+		"<leader>tv",
+		'<Cmd>exe v:count1 . "ToggleTerm direction=vertical"<CR>',
+		{ desc = "Toggle Terminals" }
+	)
+	map({ "n", "v" }, "<leader>tt", "<cmd>ToggleTermToggleAll<CR>", { desc = "toggle all terminals" })
+	map({ "n", "v" }, "<leader>tv", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Split terminal vertically" })
+	map("t", "<C-h>", [[<Cmd>wincmd h<CR>]], { desc = "Switch Window" })
+	map("t", "<C-j>", [[<Cmd>wincmd j<CR>]], { desc = "Switch Window" })
+	map("t", "<C-k>", [[<Cmd>wincmd k<CR>]], { desc = "Switch Window" })
+	map("t", "<C-l>", [[<Cmd>wincmd l<CR>]], { desc = "Switch Window" })
+	-- map({ "n", "v" }, "<leader>ts", "<cmd>!tmux split-window -v -l 15 <CR>", { desc = "Tmux new horizontal split" })
+	-- map({ "n", "v" }, "<leader>tv", "<cmd>!tmux split-window -h -l 30 <CR>", { desc = "Tmux new vertical split" })
+	-- map({ "n", "v" }, "<leader>tt", "<cmd>!tmux resize-pane -Z<CR><CR>", { desc = "Toggle terminal" })
 end
 
 M.telescope = function()

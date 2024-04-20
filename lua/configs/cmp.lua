@@ -13,9 +13,10 @@ M.cmp = function()
 			ghost_text = true,
 		},
 		sorting = {
-			priority_weight = 10,
+			priority_weight = 2,
 			comparators = {
 
+				require("copilot_cmp.comparators").prioritize,
 				-- require("cmp_copilot.comparators").prioritize,
 				-- Below is the default comparitor list and order for nvim-cmp
 				cmp.config.compare.offset,
