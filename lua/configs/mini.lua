@@ -20,7 +20,7 @@ M.files = {
 		go_out = "h",
 		go_out_plus = "H",
 		reset = "<BS>",
-		reveal_cwd = "@",
+		reveal_cwd = ".",
 		show_help = "g?",
 		synchronize = "=",
 		trim_left = "<",

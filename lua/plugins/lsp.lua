@@ -20,4 +20,25 @@ return {
 			require("lsp_signature").setup(opts)
 		end,
 	},
+
+	{
+		"hedyhli/outline.nvim",
+		config = function()
+			-- Example mapping to toggle outline
+			require("outline").setup({
+				-- Your setup opts here (leave empty to use defaults)
+				--
+				outline_window = {
+					auto_jump = true,
+					width = 20,
+					show_numbers = true,
+				},
+
+				keymaps = {
+					up_and_jump = "<C-p>",
+					down_and_jump = "<C-n>",
+				},
+			})
+		end,
+	},
 }

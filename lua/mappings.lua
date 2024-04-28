@@ -30,10 +30,38 @@ M.page_navigation = function()
 end
 
 M.buffer_navigation = function()
-	map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Current Buffer" })
+	map("n", "<leader>bd", "<cmd>bdelete|bnext<CR>", { desc = "Close Current Buffer" })
 	map("n", "<leader>x", "<cmd>q<CR>", { desc = "Close current window/pane" })
-	map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
-	map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
+	-- here we want to enable <count>]b to go to <count> forward buffer
+	local function goto_buffer(dir)
+		local count = vim.v.count
+		if count == 0 then
+			count = 1
+		end
+		if dir == "prev" then
+			vim.cmd(count .. "bprevious")
+		else
+			vim.cmd(count .. "bnext")
+		end
+	end
+
+	map("n", "]b", function()
+		goto_buffer("next")
+	end, { desc = "Next Buffer" })
+
+	map("n", "[b", function()
+		goto_buffer("prev")
+	end, { desc = "Previous Buffer" })
+
+	map("n", "<leader>bz", function()
+		require("zen-mode").toggle({
+			window = {
+				width = 0.85, -- width will be 85% of the editor width
+			},
+		})
+	end, { desc = "zenmode" })
+
+	-- map({ "n", "v" }, "<C-w>z", "<cmd>wincmd |<cr>", { desc = "Maximize current window" })
 	-- map("n", "}", "]m", { desc = "Next {" })
 end
 
@@ -49,7 +77,7 @@ M.window_navigation = function()
 	map("n", "<C-w>=", "<cmd>WindowsEqualize<cr>", { desc = "Equalize window sizes" })
 end
 
-M.harpoon = function()
+M.utils = function()
 	map("n", "<leader>hh", function()
 		require("harpoon.ui").toggle_quick_menu()
 	end, { desc = "Toggle Harpoon" })
@@ -256,6 +284,7 @@ M.lsp = function(event)
 	map("<leader>cl", function()
 		vim.cmd("LspRestart")
 	end, "[C]ode [L]SP Restart")
+	map("<leader>cd", ":TroubleToggle workspace_diagnostics<CR>", "[C]ode [D]iagnostics")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
 	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 end

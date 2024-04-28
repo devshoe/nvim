@@ -32,6 +32,17 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
+-- vim.api.nvim_create_autocmd("BufEnter", {
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		if vim.api.nvim_buf_get_option(0, "buftype") == "nofile" then
+-- 			return
+-- 		else
+-- 			vim.cmd(":wincmd |")
+-- 		end
+-- 		-- Rest of your code
+-- 	end,
+-- })
 -- -- -- Import necessary modules
 -- local telescope = require("telescope")
 -- local pickers = require("telescope.pickers")

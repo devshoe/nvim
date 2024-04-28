@@ -9,6 +9,7 @@ M.cmp = function()
 
 	luasnip.config.setup(M.luasnip)
 	cmp.setup({
+		enabled = true,
 		experimental = {
 			ghost_text = true,
 		},
