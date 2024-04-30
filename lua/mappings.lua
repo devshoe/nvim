@@ -207,6 +207,7 @@ M.ai = {
 		map({ "n", "v" }, "<leader>act", "<cmd>CopilotChatTests<CR>", { desc = "[A]I [C]opilot Generate [T]ests" })
 		map({ "n", "v" }, "<leader>acd", "<cmd>CopilotChatDocs<CR>", { desc = "[A]I [C]opilot Generate [D]ocs" })
 		map({ "n", "v" }, "<leader>acf", "<cmd>CopilotChatFix<CR>", { desc = "[A]I [C]opilot [F]ix Code" })
+		map({ "n", "v" }, "<leader>acx", "<cmd>Copilot toggle<CR>", { desc = "[A]I [C]opilot toggle" })
 	end,
 }
 
